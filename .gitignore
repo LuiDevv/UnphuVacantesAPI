@@ -1,0 +1,8 @@
+# Archivos binarios y temporales
+bin/
+obj/
+.vscode/
+*.user
+*.suo
+*.sln.docstates
+*.vs/
