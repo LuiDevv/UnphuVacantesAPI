@@ -6,9 +6,8 @@ using api.Models;
 
 namespace api.interfaces
 {
-    public interface ICompanyInterface
+    public interface ITokenService
     {
-        Task<IEnumerable<Company>> GetAllAsync();
-        
+        string CreateToken(AppUser user);
     }
 }

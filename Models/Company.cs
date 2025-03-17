@@ -1,7 +1,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api.Models;
+[Table("Companies")]
 public class Company
 {
     [Key]
@@ -23,4 +25,5 @@ public class Company
     public string RNC { get; set; } = string.Empty;
 
     public bool IsApprovedByUNPHU { get; set; } = false;
+    public List<Portfolio> Portfolios { get; set; } = new List<Portfolio>();
 }

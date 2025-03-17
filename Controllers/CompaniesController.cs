@@ -4,6 +4,10 @@ using api.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using api.Helpers;
+using api.Repository;
+using Microsoft.AspNetCore.Authorization;
+
 
 [Route("api/[controller]")]
 [ApiController]
@@ -16,11 +20,19 @@ public class CompaniesController : ControllerBase
         _context = context;
     }
 
+    
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Company>>> GetCompanies()
+    [Authorize]
+    public async Task<IActionResult> GetCompanies([FromQuery] QueryObject query, int pageNumber = 1, int pageSize = 10, string sortBy = "Name", bool isDescending = false)
     {
-        return await _context.Companies.ToListAsync();
+        var companyRepository = new CompanyRepository(_context);
+        var companies = await companyRepository.GetFilteredCompaniesAsync(query, pageNumber, pageSize, sortBy, isDescending);
+        return Ok(companies);
     }
+
+
+
+
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Company>> GetCompany(int id) // Cambiado a int

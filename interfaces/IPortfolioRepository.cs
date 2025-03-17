@@ -6,9 +6,9 @@ using api.Models;
 
 namespace api.interfaces
 {
-    public interface ICompanyInterface
+    public interface IPortfolioRepository
     {
-        Task<IEnumerable<Company>> GetAllAsync();
+        Task<List<Company>> GetUserPortfolio(AppUser user);
         
     }
 }

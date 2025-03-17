@@ -2,6 +2,8 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace api.Models;
+
+[Table("Jobs")]
 public class Job
 {
     [Key]

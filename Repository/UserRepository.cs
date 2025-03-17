@@ -74,7 +74,18 @@ namespace api.Repository
                 await _context.SaveChangesAsync();
             }
         }
+
+        public Task<bool> RegisterAsync(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<User?> AuthenticateAsync(string email, string password)
+        {
+            throw new NotImplementedException();
+        }
     }
+    
 
     
 }

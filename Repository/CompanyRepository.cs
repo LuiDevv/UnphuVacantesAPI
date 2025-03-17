@@ -1,4 +1,5 @@
 using api.Data;
+using api.Helpers;
 using api.interfaces;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
@@ -48,5 +49,42 @@ namespace api.Repository
                 await _context.SaveChangesAsync();
             }
         }
+        public async Task<IEnumerable<Company>> GetFilteredCompaniesAsync(QueryObject query, int pageNumber = 1, int pageSize = 10, string sortBy = "Name", bool isDescending = false)
+        {
+            var companyQuery = _context.Companies.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(query.Name))
+            {
+                companyQuery = companyQuery.Where(c => c.Name.ToLower().Contains(query.Name.ToLower()));
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.Location))
+            {
+                companyQuery = companyQuery.Where(c => c.Location.ToLower().Contains(query.Location.ToLower()));
+            }
+
+            if (query.IsApprovedByUNPHU.HasValue)
+            {
+                companyQuery = companyQuery.Where(c => c.IsApprovedByUNPHU == query.IsApprovedByUNPHU);
+            }
+
+            // Ordenación dinámica
+            if (isDescending)
+            {
+                companyQuery = companyQuery.OrderByDescending(c => EF.Property<object>(c, sortBy));
+            }
+            else
+            {
+                companyQuery = companyQuery.OrderBy(c => EF.Property<object>(c, sortBy));
+            }
+
+            // Paginación
+            companyQuery = companyQuery.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+
+            return await companyQuery.ToListAsync();
+        }
+
+
+
     }
 }

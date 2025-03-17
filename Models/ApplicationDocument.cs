@@ -3,6 +3,8 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api.Models;
+
+[Table("ApplicationDocuments")]
 public class ApplicationDocument
 {
     [Key]

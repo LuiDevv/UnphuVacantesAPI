@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 
 namespace api.Models;
+
+[Table("JobRecommendations")]
 public class JobRecommendation
 {
     [Key]
