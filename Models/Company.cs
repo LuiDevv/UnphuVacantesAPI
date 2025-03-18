@@ -24,6 +24,11 @@ public class Company
     [Required]
     public string RNC { get; set; } = string.Empty;
 
+    public int? PortfolioCompanyId { get; set; }
+
+    // Nueva columna para 'Symbol'
+    public string Symbol { get; set; } = string.Empty;
     public bool IsApprovedByUNPHU { get; set; } = false;
     public List<Portfolio> Portfolios { get; set; } = new List<Portfolio>();
+    
 }

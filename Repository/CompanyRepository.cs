@@ -23,10 +23,12 @@ namespace api.Repository
             return await _context.Companies.ToListAsync();
         }
 
-        public async Task<Company?> GetByIdAsync(Guid id)
+        public async Task<Company?> GetByIdAsync(int id)
         {
             return await _context.Companies.FindAsync(id);
         }
+
+    
 
         public async Task AddAsync(Company company)
         {
@@ -40,7 +42,7 @@ namespace api.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(int id)
         {
             var company = await _context.Companies.FindAsync(id);
             if (company != null)
@@ -84,7 +86,11 @@ namespace api.Repository
             return await companyQuery.ToListAsync();
         }
 
+        
 
-
+        public async Task<Company?> GetBySymbolAsync(string symbol)
+        {
+            return await _context.Companies.FirstOrDefaultAsync(c => c.Symbol == symbol);
+        }
     }
 }

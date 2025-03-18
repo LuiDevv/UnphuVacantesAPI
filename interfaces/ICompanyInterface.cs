@@ -9,6 +9,8 @@ namespace api.interfaces
     public interface ICompanyInterface
     {
         Task<IEnumerable<Company>> GetAllAsync();
+        Task<Company?> GetByIdAsync(int id);
+        Task<Company?> GetBySymbolAsync(string symbol);
         
     }
 }

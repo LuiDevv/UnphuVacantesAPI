@@ -76,6 +76,8 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options => {
         options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
         options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
         options.DefaultForbidScheme = JwtBearerDefaults.AuthenticationScheme;
+        
+
 
     }).AddJwtBearer(options => {
         options.SaveToken = true;

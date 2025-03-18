@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.Data;
 
@@ -11,9 +12,11 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250318144630_AddPortfolioCompanyIdAndSymbol")]
+    partial class AddPortfolioCompanyIdAndSymbol
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,19 +54,19 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "ceca3307-bab1-4637-9558-47f120780e8b",
+                            Id = "98ea7dcf-4c7b-487a-ada6-e9b6dc2a8156",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "e67a2f8c-1dc2-4e8c-994c-fdf5c5b545b0",
+                            Id = "5d46d287-68bd-4757-aa4c-e9ff65078203",
                             Name = "Employer",
                             NormalizedName = "EMPLOYER"
                         },
                         new
                         {
-                            Id = "8fda41b6-cf70-46c7-884c-ef2a9881ee98",
+                            Id = "cd460d78-e521-4546-8db1-1dea2c1bcdae",
                             Name = "JobSeeker",
                             NormalizedName = "JOBSEEKER"
                         });
@@ -275,10 +278,6 @@ namespace api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("AppUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -293,8 +292,6 @@ namespace api.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
 
                     b.ToTable("Comments");
                 });
@@ -330,6 +327,9 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PortfolioAppUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int?>("PortfolioCompanyId")
                         .HasColumnType("int");
 
@@ -342,6 +342,8 @@ namespace api.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PortfolioAppUserId", "PortfolioCompanyId");
 
                     b.ToTable("Companies");
                 });
@@ -681,15 +683,11 @@ namespace api.Migrations
                     b.Navigation("JobApplication");
                 });
 
-            modelBuilder.Entity("api.Models.Comment", b =>
+            modelBuilder.Entity("api.Models.Company", b =>
                 {
-                    b.HasOne("api.Models.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
+                    b.HasOne("api.Models.Portfolio", null)
+                        .WithMany("Companies")
+                        .HasForeignKey("PortfolioAppUserId", "PortfolioCompanyId");
                 });
 
             modelBuilder.Entity("api.Models.FavoriteJob", b =>
@@ -825,6 +823,11 @@ namespace api.Migrations
             modelBuilder.Entity("api.Models.Company", b =>
                 {
                     b.Navigation("Portfolios");
+                });
+
+            modelBuilder.Entity("api.Models.Portfolio", b =>
+                {
+                    b.Navigation("Companies");
                 });
 #pragma warning restore 612, 618
         }

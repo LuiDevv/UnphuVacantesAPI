@@ -19,5 +19,5 @@ public class Portfolio
     public Company? Company { get; set; } 
     public int CompanyId { get; set; } // Relación con la compañía
 
-    public List<Company> Companies { get; set; } = new List<Company>(); // Relación con stocks
+     // Relación con stocks
 }
