@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace api.Dtos.Account
 {
-    public class LoginDto
+    public class LoginDTO
     {
         [Required]
         public string Username { get; set; }
         [Required]
         public string Password { get; set; }
+        
     }
 }

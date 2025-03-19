@@ -1,130 +1,96 @@
+using Microsoft.AspNetCore.Mvc;
+using api.Data;
+using api.Models;
+using api.Interfaces;
+using api.Dtos;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using api.Dtos.Comment;
-using api.Extensions;
-using api.Helpers;
-using api.Interfaces;
-using api.Mappers;
-using api.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace api.Controllers
 {
-    [Route("api/comment")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class CommentController : ControllerBase
+    public class CommentsController : ControllerBase
     {
-        private readonly ICommentRepository _commentRepo;
-        private readonly IStockRepository _stockRepo;
-        private readonly UserManager<AppUser> _userManager;
-        private readonly IFMPService _fmpService;
-        public CommentController(ICommentRepository commentRepo,
-        IStockRepository stockRepo, UserManager<AppUser> userManager,
-        IFMPService fmpService)
+        private readonly ICommentRepository _commentRepository;
+        private readonly IMapper _mapper;
+
+        public CommentsController(ICommentRepository commentRepository, IMapper mapper)
         {
-            _commentRepo = commentRepo;
-            _stockRepo = stockRepo;
-            _userManager = userManager;
-            _fmpService = fmpService;
+            _commentRepository = commentRepository;
+            _mapper = mapper;
         }
 
+        // GET: api/comments
         [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> GetAll([FromQuery] CommentQueryObject queryObject)
+        public async Task<ActionResult<IEnumerable<CommentDTO>>> GetComments()
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var comments = await _commentRepo.GetAllAsync(queryObject);
-
-            var commentDto = comments.Select(s => s.ToCommentDto());
-
-            return Ok(commentDto);
+            var comments = await _commentRepository.GetAllAsync();
+            return Ok(_mapper.Map<IEnumerable<CommentDTO>>(comments));
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetById([FromRoute] int id)
+        // GET: api/comments/{id}
+        [HttpGet("{id}")]
+        public async Task<ActionResult<CommentDTO>> GetComment(Guid id)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var comment = await _commentRepo.GetByIdAsync(id);
-
+            var comment = await _commentRepository.GetByIdAsync(id);
             if (comment == null)
-            {
                 return NotFound();
-            }
-
-            return Ok(comment.ToCommentDto());
+            
+            return Ok(_mapper.Map<CommentDTO>(comment));
         }
+
+        // POST: api/comments
 
         [HttpPost]
-        [Route("{symbol:alpha}")]
-        public async Task<IActionResult> Create([FromRoute] string symbol, CreateCommentDto commentDto)
+        public async Task<ActionResult<CommentDTO>> CreateComment(CreateCommentRequest request)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            if (string.IsNullOrWhiteSpace(request.Content))
+                return BadRequest("El contenido no puede estar vacío.");
 
-            var stock = await _stockRepo.GetBySymbolAsync(symbol);
+            var comment = _mapper.Map<Comment>(request);
+            comment.Id = Guid.NewGuid();
+            comment.CreatedAt = DateTime.UtcNow;
 
-            if (stock == null)
-            {
-                stock = await _fmpService.FindStockBySymbolAsync(symbol);
-                if (stock == null)
-                {
-                    return BadRequest("Stock does not exists");
-                }
-                else
-                {
-                    await _stockRepo.CreateAsync(stock);
-                }
-            }
+            await _commentRepository.AddAsync(comment);
+            var commentDTO = _mapper.Map<CommentDTO>(comment);
 
-            var username = User.GetUsername();
-            var appUser = await _userManager.FindByNameAsync(username);
-
-            var commentModel = commentDto.ToCommentFromCreate(stock.Id);
-            commentModel.AppUserId = appUser.Id;
-            await _commentRepo.CreateAsync(commentModel);
-            return CreatedAtAction(nameof(GetById), new { id = commentModel.Id }, commentModel.ToCommentDto());
+            return CreatedAtAction(nameof(GetComment), new { id = comment.Id }, commentDTO);
         }
 
-        [HttpPut]
-        [Route("{id:int}")]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCommentRequestDto updateDto)
+
+        // PUT: api/comments/{id}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateComment(Guid id, UpdateCommentRequest request)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            var existingComment = await _commentRepository.GetByIdAsync(id);
+            if (existingComment == null)
+                return NotFound();
+            
+            if (string.IsNullOrWhiteSpace(request.Content))
+                return BadRequest("El contenido no puede estar vacío.");
 
-            var comment = await _commentRepo.UpdateAsync(id, updateDto.ToCommentFromUpdate(id));
+            _mapper.Map(request, existingComment);
+            await _commentRepository.UpdateAsync(existingComment);
 
+            return NoContent();
+        }
+
+        // DELETE: api/comments/{id}
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteComment(Guid id)
+        {
+            var comment = await _commentRepository.GetByIdAsync(id);
             if (comment == null)
-            {
-                return NotFound("Comment not found");
-            }
+                return NotFound();
 
-            return Ok(comment.ToCommentDto());
-        }
-
-        [HttpDelete]
-        [Route("{id:int}")]
-        public async Task<IActionResult> Delete([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var commentModel = await _commentRepo.DeleteAsync(id);
-
-            if (commentModel == null)
-            {
-                return NotFound("Comment does not exist");
-            }
-
-            return Ok(commentModel);
+            await _commentRepository.DeleteAsync(id);
+            return NoContent();
         }
     }
+
+    
 }

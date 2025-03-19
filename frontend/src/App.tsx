@@ -1,20 +1,25 @@
-import { Outlet } from "react-router";
-import Navbar from "./Components/Navbar/Navbar";
-import "react-toastify/dist/ReactToastify.css";
-import "./App.css";
-import { ToastContainer } from "react-toastify";
-import { UserProvider } from "./Context/useAuth";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
+import PrivateRoute from "./routes/PrivateRoute";
+import Home from "./pages/home";
+import Login from "./pages/login";
+import Dashboard from "./pages/dashboard"; // Ejemplo de página protegida
 
-function App() {
+const App: React.FC = () => {
   return (
-    <>
-      <UserProvider>
-        <Navbar />
-        <Outlet />
-        <ToastContainer />
-      </UserProvider>
-    </>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+          </Route>
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
-}
+};
 
 export default App;

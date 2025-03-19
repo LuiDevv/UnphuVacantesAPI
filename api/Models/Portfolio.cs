@@ -1,17 +1,23 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+using api.Models;
 
-namespace api.Models
+namespace api.Models;
+
+[Table("Portfolios")]
+public class Portfolio
+
 {
-    [Table("Portfolios")]
-    public class Portfolio
-    {
-        public string AppUserId { get; set; }
-        public int StockId { get; set; }
-        public AppUser AppUser { get; set; }
-        public Stock Stock { get; set; }
-    }
+    [Key]
+    public int Id { get; set; }
+
+    [Required]
+    public string? AppUserId { get; set; }  // Relación con el usuario
+    public AppUser? AppUser { get; set; }   // Usuario propietario
+    public Company? Company { get; set; } 
+    public int CompanyId { get; set; } // Relación con la compañía
+
+     // Relación con stocks
 }

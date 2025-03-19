@@ -1,0 +1,188 @@
+/* Paleta de colores UNPHU */
+:root {
+    --unphu-green: #006341;
+    --unphu-yellow: #FFB81C;
+    --unphu-light-gray: #F4F4F4;
+    --unphu-dark-gray: #333333;
+    --unphu-white: #FFFFFF;
+    --unphu-light-green: #00A86B;
+}
+
+/* Estilos generales */
+body {
+    font-family: 'Arial', sans-serif;
+    background: url('/public/images/unphu-3.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: var(--unphu-dark-gray);
+    position: relative;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Capa verde semitransparente sobre el fondo */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 99, 65, 0.5); /* Verde UNPHU con 50% de opacidad */
+    z-index: 0; /* Mantiene la capa detrás del contenido */
+}
+
+/* Asegura que el contenido esté sobre la capa verde */
+*,
+*::before,
+*::after {
+    position: relative;
+    z-index: 1;
+    box-sizing: inherit;
+}
+
+/* Navbar */
+.navbar {
+    background-color: var(--unphu-green); /* Aseguramos que el fondo sea verde oscuro */
+    border-bottom: 2px solid var(--unphu-light-gray); /* Sutil separación */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+/* Navbar para mantener el color blanco de los enlaces */
+.navbar-brand, .nav-link {
+    color: var(--unphu-white) !important;
+    font-weight: 500;
+    transition: color 0.3s ease-in-out;
+}
+
+.nav-link:hover {
+    color: var(--unphu-yellow) !important;
+}
+
+/* Botones */
+.btn-primary {
+    background-color: var(--unphu-light-green);
+    border-color: var(--unphu-light-green);
+    color: var(--unphu-white);
+    padding: 12px 20px;
+    border-radius: 30px;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--unphu-yellow);
+    border-color: var(--unphu-yellow);
+    color: var(--unphu-dark-gray);
+    transform: translateY(-2px); /* Efecto de elevación */
+}
+
+/* Carrusel */
+.carousel {
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Sombra sutil */
+}
+
+.carousel-item img {
+    height: 350px; /* Tamaño uniforme */
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Contenedor principal */
+.home-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    padding: 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Secciones */
+.section {
+    padding: 80px 20px;
+    text-align: center;
+    background-color: var(--unphu-light-gray);
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.section-title {
+    color: var(--unphu-green);
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Información - Fondo blanco y sombra */
+.info-box {
+    height: 300px;
+    background-color: var(--unphu-white);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    margin-top: 20px;
+}
+
+.info-box h2 {
+    color: var(--unphu-green);
+    font-weight: 600;
+}
+
+/* Tipografía */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+}
+
+/* Enlaces */
+a {
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+}
+
+a:hover {
+    color: var(--unphu-yellow);
+}
+
+/* Estilos adicionales */
+section {
+    background-color: var(--unphu-white);
+    border-radius: 15px;
+    padding: 40px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+footer {
+    background-color: var(--unphu-green);
+    color: var(--unphu-white);
+    padding: 20px 0;
+    text-align: center;
+    font-size: 14px;
+    margin-top: 40px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .home-container {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .section-title {
+        font-size: 30px;
+    }
+}
