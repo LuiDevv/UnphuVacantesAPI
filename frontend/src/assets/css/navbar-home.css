@@ -1,0 +1,54 @@
+/* Navbar */
+.unphu-navbar {
+    background-color: var(--unphu-green) !important; /* Color institucional */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .unphu-brand {
+    font-family: 'Arial', sans-serif;
+    color: #ffffff !important; /* Asegurando que el color del logo sea blanco */
+    font-weight: bold;
+    font-size: 1.5rem;
+  }
+  
+  .unphu-navbar .navbar-toggler {
+    border-color: #ffffff;
+  }
+  
+  .unphu-navbar .navbar-toggler-icon {
+    background-color: #004d59;
+  }
+  
+  /* Links del Navbar */
+  .nav-link-emp, .nav-link-login, .nav-link-register {
+    font-family: 'Arial', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #fff !important; /* Color de los enlaces */
+    margin-right: 15px;
+    /* Fondo de los botones */
+    padding: 10px 15px;
+    border-radius: 5px; /* Bordes redondeados para un look más moderno */
+    text-decoration: none; /* Eliminar subrayado */
+  }
+  
+  .nav-link-emp:hover, .nav-link-login:hover, .nav-link-register:hover {
+    color: #ffffff !important; /* Mantener texto blanco en el hover */
+    background-color: #f5a623 !important; /* Fondo del botón cambia en hover */
+  }
+  
+  /* Estilo para móviles y pantallas pequeñas */
+  @media (max-width: 768px) {
+    .unphu-navbar {
+      background-color: #005f6b !important; /* Fondo color institucional en móviles */
+    }
+  
+    .unphu-brand {
+      font-size: 1.25rem;
+    }
+  
+    .nav-link-emp, .nav-link-login, .nav-link-register {
+      font-size: 1rem;
+    }
+  }
+  

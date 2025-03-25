@@ -1,0 +1,201 @@
+/* Paleta de colores UNPHU */
+:root {
+    --unphu-green: #006341;
+    --unphu-yellow: #FFB81C;
+    --unphu-light-gray: #F4F4F4;
+    --unphu-dark-gray: #333333;
+    --unphu-white: #FFFFFF;
+    --unphu-light-green: #00A86B;
+    --unphu-border-gray: #D1D1D1;
+}
+
+/* Contenedor general */
+.vacantes-container {
+    padding: 60px 20px;
+    background-color: var(--unphu-light-gray);
+    min-height: 100vh;
+}
+
+/* Título */
+.vacantes-title {
+    text-align: center;
+    color: var(--unphu-green);
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 40px;
+}
+
+/* Contenedor de las vacantes - CAMBIADO A HORIZONTAL */
+.vacantes-grid {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 20px;
+    padding-bottom: 20px;
+    width: 100%;
+}
+
+/* Tarjeta de vacante */
+.vacante-card-container {
+    background-color: var(--unphu-white) !important;
+    border: 1px solid var(--unphu-border-gray) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out !important;
+    padding: 0 !important;
+    width: 350px;
+    min-width: 350px;
+    flex: 0 0 auto;
+        height: 400px; /* Altura fija para las tarjetas */
+}
+
+.vacante-card-container:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Cuerpo de la tarjeta */
+.vacante-card-container .card-body {
+    padding: 20px !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100% !important;
+}
+
+/* Título de la vacante */
+.vacante-card-title {
+    color: var(--unphu-green);
+    font-size: 20px !important;
+    font-weight: 600 !important;
+    margin-bottom: 8px !important;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+/* Subtítulo de la vacante (área) */
+.vacante-card-subtitle {
+    color: var(--unphu-dark-gray);
+    font-size: 14px !important;
+    margin-bottom: 12px !important;
+}
+
+/* Texto de la vacante */
+.vacante-card-text {
+    color: var(--unphu-dark-gray);
+    font-size: 14px !important;
+    line-height: 1.4 !important;
+    overflow: auto; /* Scroll si es necesario */
+    height: 150px; /* Altura fija para la descripción */
+    margin-bottom: 10px; /* Espacio entre características */
+}
+
+/* Estilos para los textos en negrita */
+.vacante-card-text strong {
+    font-weight: 600; /* Más negrita */
+    margin-right: 5px; /* Espacio después de la etiqueta */
+    display: inline-block; /* Evitar problemas de espaciado */
+}
+
+/* Estilo para el área en negrita */
+.vacante-card-subtitle strong {
+    font-weight: 600;
+}
+
+/* Botones dentro de la tarjeta */
+.vacante-card-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.vacante-btn {
+    background-color: var(--unphu-light-green);
+    border: none;
+    color: var(--unphu-white);
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 12px;
+    transition: background-color 0.3s ease;
+    flex: 1;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.vacante-btn:hover {
+    background-color: var(--unphu-yellow);
+    color: var(--unphu-dark-gray);
+}
+
+/* Botón flotante para crear vacante */
+.create-vacante-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--unphu-light-green);
+    color: white;
+    font-size: 30px;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transition: background-color 0.3s ease;
+}
+
+.create-vacante-btn:hover {
+    background-color: var(--unphu-green);
+}
+
+.create-vacante-btn svg {
+    width: 35px;
+    height: 35px;
+}
+
+/* CSS para el modal */
+.custom-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Quita el background-color para hacer la superposición transparente */
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+}
+
+.custom-modal .modal-dialog {
+  max-width: 80%;
+  margin: 1.75rem auto;
+}
+
+.custom-modal .modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.vacante-card-text .btn-link {
+    padding: 0;
+    margin: 0;
+    color: var(--unphu-light-green);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.vacante-card-text .btn-link:hover {
+    text-decoration: underline;
+    color: var(--unphu-green);
+}

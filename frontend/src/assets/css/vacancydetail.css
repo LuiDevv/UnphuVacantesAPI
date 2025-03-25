@@ -1,0 +1,92 @@
+/* vacancy-detail.css */
+
+/* Contenedor principal de la página de detalles */
+.vacancy-detail-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    min-height: 100vh; /* Asegura que la página ocupe toda la altura de la ventana */
+    background-color: #f7f7f7; /* Fondo gris claro */
+}
+
+/* Estilo para la tarjeta de la vacante */
+.vacancy-detail-card {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 800px;
+    text-align: left;
+    font-family: 'Arial', sans-serif;
+    border-top: 5px solid #0061a8; /* Azul que podría representar los colores de la UNPHU */
+}
+
+/* Títulos dentro de la tarjeta */
+.vacancy-detail-card h3 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 1rem;
+    font-weight: 600; /* Para darle más presencia */
+}
+
+/* Descripción y detalles de la vacante */
+.vacancy-detail-card p {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+/* Estilo para el botón de aplicar */
+.vacancy-detail-card button {
+    padding: 0.8rem 1.5rem;
+    background-color: #0061a8; /* Azul similar al de la UNPHU */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 1rem;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+/* Efecto de hover en el botón de aplicar */
+.vacancy-detail-card button:hover {
+    background-color: #004a72; /* Un azul más oscuro para el hover */
+}
+
+/* Estilo para el input de cargar CV */
+.vacancy-detail-card input[type="file"] {
+    margin-top: 1rem;
+    font-size: 1rem;
+    padding: 0.5rem;
+    border: 1px solid #ccc; /* Estilo sutil para los inputs */
+    border-radius: 5px;
+}
+
+/* Adaptabilidad para pantallas pequeñas */
+@media (max-width: 768px) {
+    .vacancy-detail-card {
+        width: 90%; /* Aumenta el ancho de la tarjeta en pantallas más pequeñas */
+        padding: 1.5rem;
+    }
+
+    .vacancy-detail-card h3 {
+        font-size: 1.6rem;
+    }
+
+    .vacancy-detail-card p {
+        font-size: 1rem;
+    }
+
+    .vacancy-detail-card button {
+        padding: 0.7rem 1.2rem;
+    }
+
+    .vacancy-detail-card input[type="file"] {
+        font-size: 0.9rem;
+    }
+}

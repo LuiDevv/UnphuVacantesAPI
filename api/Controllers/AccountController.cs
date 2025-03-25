@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Dtos;
 using api.Dtos.Account;
 using api.interfaces;
 using api.Models;
-
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -60,7 +61,11 @@ namespace api.Controllers
                 var appUser = new AppUser
                 {
                     UserName = registerDTO.Username,
-                    Email = registerDTO.Email
+                    Email = registerDTO.Email,
+                    FirstName = registerDTO.FirstName,
+                    LastName = registerDTO.LastName,
+                    PhoneNumber = registerDTO.PhoneNumber
+
                 };
 
                 var createdUser = await _userManager.CreateAsync(appUser, registerDTO.Password);
@@ -93,5 +98,63 @@ namespace api.Controllers
                 return BadRequest(e.Message);
             }
         }
+        [HttpGet("current-user")]
+        [Authorize]
+        public async Task<IActionResult> GetCurrentUser()
+        {
+            // Verificar autenticación primero
+            if (User?.Identity?.IsAuthenticated != true)
+            {
+                return Unauthorized("User not authenticated");
+            }
+
+            // Obtener el usuario usando el claim del token
+            var user = await _userManager.GetUserAsync(User);
+            
+            if (user == null)
+            {
+                return NotFound("User not found in database");
+            }
+
+            return Ok(new UserDetails
+            {
+                UserName = user.UserName,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber,
+                ProfilePicture = user.ProfilePicture,
+                
+                Token = _tokenService.CreateToken(user)
+            });
+        }
+        [HttpPut("update-profile")]
+        public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileDto updateProfileDto)
+        {
+            // Obtener el usuario actual
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound("Usuario no encontrado.");
+            }
+
+            // Actualizar los campos permitidos
+            user.UserName = updateProfileDto.UserName ?? user.UserName;
+            user.Email = updateProfileDto.Email ?? user.Email;
+            user.FirstName = updateProfileDto.FirstName ?? user.FirstName;
+            user.LastName = updateProfileDto.LastName ?? user.LastName;
+            user.PhoneNumber = updateProfileDto.PhoneNumber ?? user.PhoneNumber;
+            user.ProfilePicture = updateProfileDto.ProfilePicture ?? user.ProfilePicture;
+
+            // Guardar los cambios
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                return BadRequest("Error al actualizar el perfil.");
+            }
+
+            return Ok(new { message = "Perfil actualizado correctamente." });
+        }
+
     }
 }

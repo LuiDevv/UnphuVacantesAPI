@@ -1,0 +1,117 @@
+/* General Reset */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --unphu-green: #006341;
+  --unphu-yellow: #FFB81C;
+  --unphu-light-gray: #F4F4F4;
+  --unphu-dark-gray: #333333;
+  --unphu-white: #FFFFFF;
+  --unphu-light-green: #00A86B;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: var(--unphu-white);
+  color: var(--unphu-dark-gray);
+  overflow-x: hidden;
+  margin: 0;
+  height: 100vh; /* Asegura que la altura sea el 100% de la ventana */
+}
+
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  background-color: var(--unphu-light-gray);
+  overflow-y: auto; /* Habilita el desplazamiento vertical */
+}
+
+.dashboard-stat-cards{
+  margin-bottom: 30px;
+}
+
+
+.main-content {
+  margin-left: 250px;
+  padding: 20px;
+  width: 100%;
+  overflow-y: auto; /* Habilita el scroll dentro del contenido principal */
+  height: 100vh; /* Asegura que el contenido no desborde */
+}
+
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.content-header h1 {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+/* Responsiveness: Ajuste en pantallas pequeñas */
+@media (max-width: 768px) {
+  .vacante-card {
+    width: 48%; /* Dos tarjetas por fila en pantallas pequeñas */
+    margin-right: 10px;
+  }
+}
+.vacante-reciente-col {
+  flex: 1 1 30%; /* Permite que cada columna ocupe un 30% del ancho */
+  max-width: 30%;
+  display: flex;
+  justify-content: center; /* Centra las tarjetas dentro de la columna */
+}
+
+ .vacante-reciente-card {
+  display: flex;
+  border-radius: 8px; 
+  box-shadow: 0 4px 6px rgba(0, 123, 255, 0.2);
+  transition: transform 0.3s ease-in-out;
+  margin-bottom: 20px; 
+  width: 300px;
+  max-width: 100%; /* Ajusta el ancho máximo al 100% del contenedor */
+    
+}
+.vacante-reciente-card:hover {
+  transform: scale(1.05); /* Efecto de hover */
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+}
+
+.vacante-reciente-card .card-body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 20px;
+  
+}
+
+.vacante-reciente-card .vacante-reciente-btn {
+  margin-top: auto;
+  width: 100%;
+  padding: 10px;
+  background-color: var(--unphu-light-green);
+  border: none;
+  text-align: center;
+}
+.vacante-reciente-card .vacante-reciente-btn:hover {
+  background-color: var(--unphu-yellow);
+}
+
+.vacante-reciente-btn {
+  width: auto;  /* Permite que el botón se ajuste al contenido */
+  max-width: 90%; /* Evita que crezca demasiado */
+  padding: 10px 15px; /* Ajuste de espacio interno */
+  display: block;
+  margin: 10px auto; /* Centra el botón sin afectar otros elementos */
+}
+
+

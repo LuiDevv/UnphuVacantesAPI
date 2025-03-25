@@ -8,7 +8,11 @@ namespace api.Models
 {
     public class AppUser : IdentityUser
     {
+         public string Role { get; set; } = string.Empty; // Admin, Employer, Applicant
         public List<Portfolio> Portfolios { get; set; } = new List<Portfolio>();
         
+         public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
+        public string ProfilePicture { get; set; } = string.Empty;
     }
 }

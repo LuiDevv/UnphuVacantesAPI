@@ -2,20 +2,25 @@ using api.Data;
 using api.Helpers;
 using api.interfaces;
 using api.Models;
+using api.Dtos;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FinShark.Dtos;
+using Microsoft.Extensions.Logging; // Añade esta línea
 
 namespace api.Repository
 {
     public class CompanyRepository : ICompanyInterface
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<CompanyRepository> _logger; // Añade esta línea
 
-        public CompanyRepository(ApplicationDbContext context)
+        public CompanyRepository(ApplicationDbContext context, ILogger<CompanyRepository> logger) // Modifica el constructor
         {
             _context = context;
+            _logger = logger; // Inicializa el logger
         }
 
         public async Task<IEnumerable<Company>> GetAllAsync()
@@ -28,10 +33,9 @@ namespace api.Repository
             return await _context.Companies.FindAsync(id);
         }
 
-    
-
         public async Task AddAsync(Company company)
         {
+            company.Password = PasswordHelper.HashPassword(company.Password);
             await _context.Companies.AddAsync(company);
             await _context.SaveChangesAsync();
         }
@@ -51,7 +55,8 @@ namespace api.Repository
                 await _context.SaveChangesAsync();
             }
         }
-        public async Task<IEnumerable<Company>> GetFilteredCompaniesAsync(QueryObject query, int pageNumber = 1, int pageSize = 10, string sortBy = "Name", bool isDescending = false)
+
+        public async Task<IEnumerable<GetCompanyDTO>> GetFilteredCompaniesAsync(QueryObject query, int pageNumber = 1, int pageSize = 10, string sortBy = "Name", bool isDescending = false)
         {
             var companyQuery = _context.Companies.AsQueryable();
 
@@ -83,14 +88,51 @@ namespace api.Repository
             // Paginación
             companyQuery = companyQuery.Skip((pageNumber - 1) * pageSize).Take(pageSize);
 
-            return await companyQuery.ToListAsync();
+            // Mapea a DTOs directamente en la consulta
+            return await companyQuery.Select(c => new GetCompanyDTO
+            {
+                Name = c.Name,
+                Description = c.Description,
+                ContactEmail = c.ContactEmail,
+                Phone = c.Phone,
+                Location = c.Location,
+                RNC = c.RNC,
+                Symbol = c.Symbol,
+                IsApprovedByUNPHU = c.IsApprovedByUNPHU
+            }).ToListAsync();
         }
-
-        
 
         public async Task<Company?> GetBySymbolAsync(string symbol)
         {
             return await _context.Companies.FirstOrDefaultAsync(c => c.Symbol == symbol);
         }
+
+        public async Task<Company?> AuthenticateAsync(string symbol, string password)
+        {
+            _logger.LogInformation($"Attempting authentication for symbol: {symbol}");
+
+            var company = await _context.Companies.FirstOrDefaultAsync(c => c.Symbol == symbol);
+
+            if (company == null)
+            {
+                _logger.LogWarning($"Company with symbol {symbol} not found.");
+                return null;
+            }
+
+            _logger.LogInformation($"Company found. Verifying password.");
+
+            bool isPasswordValid = PasswordHelper.VerifyPassword(password, company.Password);
+
+            if (!isPasswordValid)
+            {
+                _logger.LogWarning($"Password verification failed for symbol: {symbol}.");
+                return null;
+            }
+
+            _logger.LogInformation($"Authentication successful for symbol: {symbol}.");
+            return company;
+        }
+
+        
     }
 }

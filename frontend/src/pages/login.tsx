@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Importar useNavigate para el redireccionamiento
+import { useNavigate } from 'react-router-dom'; // Importar useNavigate para redireccionamiento
 import '../assets/css/login.css'; // Asegúrate de que este archivo CSS esté configurado correctamente
 import { Link } from 'react-router-dom';
 
@@ -14,20 +14,27 @@ const Login = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Prepara los datos para enviar a la API
-    const data = {
-      username,
-      password
-    };
+    const data = { username, password };
 
     try {
       const response = await axios.post('http://localhost:5283/api/account/login', data);
-      // Si el login es exitoso, muestra un mensaje y redirige al home
-      setSuccess('Inicio de sesión exitoso');
-      setError('');
-      navigate('/home'); // Redirige a la página de inicio después de un inicio de sesión exitoso
+      
+      if (response.data.token) {
+        // Guardar el token en localStorage
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('userName', response.data.userName);
+        localStorage.setItem('email', response.data.email);
+        
+
+        setSuccess('Inicio de sesión exitoso');
+        setError('');
+        
+        // Redirigir al dashboard
+        navigate('/dashboard-user');
+      } else {
+        setError('Error en la autenticación. Inténtalo de nuevo.');
+      }
     } catch (err) {
-      // Si hay un error, muestra un mensaje de error
       setSuccess('');
       setError('Hubo un error al iniciar sesión. Verifica tus credenciales.');
     }
@@ -38,15 +45,10 @@ const Login = () => {
       <div className="container py-5 h-100">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col col-xl-10">
-            <div className="card" style={{ borderRadius: '1rem' }}>
+            <div className="login-card">
               <div className="row g-0">
                 <div className="col-md-6 col-lg-5 d-none d-md-block">
-                  <img
-                    src="/images/form-back.png"
-                    alt="login form"
-                    className="img-fluid login-img" 
-                    style={{ borderRadius: '14.5px', width: '100%', height: '100%' }}
-                  />
+                  <img src="/images/form-back.jpg" alt="login form" className="img-fluid login-img" />
                 </div>
                 <div className="col-md-6 col-lg-7 d-flex align-items-center">
                   <div className="card-body p-4 p-lg-5 text-black">
@@ -56,11 +58,9 @@ const Login = () => {
                         <span className="h1 fw-bold mb-0">UNPHU | Vacantes</span>
                       </div>
 
-                      <h5 className="fw-normal mb-3 pb-3" style={{ letterSpacing: '1px' }}>
-                        Ingresa a tu cuenta
-                      </h5>
+                      <h5 className="fw-normal mb-3 pb-3">Ingresa a tu cuenta</h5>
 
-                      <div data-mdb-input-init className="form-outline mb-4">
+                      <div className="form-outline mb-4">
                         <input
                           type="text"
                           id="form2Example17"
@@ -69,12 +69,10 @@ const Login = () => {
                           onChange={(e) => setUsername(e.target.value)}
                           required
                         />
-                        <label className="form-label" htmlFor="form2Example17">
-                          Nombre de usuario
-                        </label>
+                        <label className="form-label" htmlFor="form2Example17">Nombre de usuario</label>
                       </div>
 
-                      <div data-mdb-input-init className="form-outline mb-4">
+                      <div className="form-outline mb-4">
                         <input
                           type="password"
                           id="form2Example27"
@@ -83,31 +81,21 @@ const Login = () => {
                           onChange={(e) => setPassword(e.target.value)}
                           required
                         />
-                        <label className="form-label" htmlFor="form2Example27">
-                          Contraseña
-                        </label>
+                        <label className="form-label" htmlFor="form2Example27">Contraseña</label>
                       </div>
 
                       <div className="pt-1 mb-4">
-                        <button
-                          data-mdb-button-init
-                          data-mdb-ripple-init
-                          className="btn btn-dark btn-lg btn-block"
-                          type="submit"
-                        >
+                        <button className="btn btn-dark btn-lg btn-block" type="submit">
                           Login
                         </button>
                       </div>
 
                       <p className="mb-5 pb-lg-2" style={{ color: '#393f81' }}>
-                      ¿No tienes una cuenta?{' '}
+                        ¿No tienes una cuenta?{' '}
                         <Link to="/register" style={{ color: '#393f81' }}>
                           Regístrate aquí.
                         </Link>
                       </p>
-
-                      
-                      
                     </form>
                     {error && <p className="error-message">{error}</p>}
                     {success && <p className="success-message">{success}</p>}

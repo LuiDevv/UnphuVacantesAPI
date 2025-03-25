@@ -1,0 +1,104 @@
+/* vacantes-user.css */
+
+/* Estableciendo las variables de color de la UNPHU en el :root */
+:root {
+  --unphu-gray: #f4f4f4; /* Color de fondo general */
+  --unphu-blue: #005B8D; /* Color principal azul de la UNPHU */
+  --unphu-green: #3E9B65; /* Color verde UNPHU */
+  --unphu-white: #ffffff; /* Blanco */
+  --unphu-dark-gray: #333333; /* Gris oscuro */
+}
+
+/* Estilo general para el contenedor de vacantes */
+.vacancies-container {
+  margin: 0;
+  padding: 80px 20px 20px; /* Añadido padding-top de 80px para el navbar */
+  background-color: var(--unphu-gray);
+  min-height: 100vh; /* Asegura que el contenedor ocupe todo el alto de la página */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Título de la sección de vacantes */
+.vacancies-container h2 {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--unphu-blue);
+  margin-bottom: 20px;
+  padding-top: 20px; /* Para separar el texto del navbar */
+}
+
+/* Estilos para el contenedor de las vacantes (grid) */
+.vacancy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+/* Estilo para cada tarjeta de vacante */
+.vacancy-card {
+  background-color: var(--unphu-white);
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px; /* Aumenta el padding para mayor tamaño */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  position: relative; /* Necesario para que el botón se posicione respecto a la tarjeta */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 320px; /* Ajusta la altura para hacerlo más grande */
+}
+
+/* Efecto hover de la tarjeta */
+.vacancy-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Título de cada vacante */
+.vacancy-card h3 {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--unphu-green);
+  margin-bottom: 10px;
+}
+
+/* Descripción corta de cada vacante */
+.vacancy-card p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 15px; /* Añadir un margen inferior para separar el texto del botón */
+  text-align: justify; /* Para mejor alineación del texto */
+}
+
+/* Botón de ver más */
+.view-more-btn {
+  display: inline-block;
+  padding: 8px 15px;
+  background-color: var(--unphu-blue);
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  position: absolute; /* Fija el botón en la parte inferior de la tarjeta */
+  bottom: 15px; /* Ajusta la distancia desde el borde inferior de la tarjeta */
+  left: 50%; /* Centra el botón horizontalmente */
+  transform: translateX(-50%); /* Asegura que el botón esté centrado */
+  z-index: 1; /* Asegura que el botón esté encima de otros elementos dentro de la tarjeta */
+}
+
+.view-more-btn:hover {
+  background-color: var(--unphu-green);
+}
+
+/* Mensaje cuando no hay vacantes disponibles */
+.vacancies-container p {
+  font-size: 16px;
+  color: #666;
+  text-align: left; /* Centrado del texto */
+  font-weight: bold; /* Resaltado */
+  color: var(--unphu-dark-gray); /* Usamos un gris oscuro en lugar de rojo */
+  margin-bottom: 250px;
+}

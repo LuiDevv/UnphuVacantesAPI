@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using api.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using UNPHU_Vacantes.Models;
 namespace api.Data
 {
     
@@ -25,6 +26,7 @@ namespace api.Data
         public DbSet<JobCategory> Categories { get; set; }
         public new DbSet<Role> Roles { get; set; }
         public new DbSet<User> Users { get; set; }
+        public DbSet<Vacant> Vacants { get; set; }
 
         public DbSet<JobRecommendation> JobRecommendations { get; set; }
         public DbSet<ApplicationDocument> ApplicationDocuments { get; set; }

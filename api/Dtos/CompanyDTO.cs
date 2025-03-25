@@ -14,6 +14,11 @@ namespace api.Dtos
         public string Phone { get; set; } = string.Empty;
         public string Location { get; set; } = string.Empty;
         public string RNC { get; set; } = string.Empty;
+        public string Symbol { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+        public string ProfilePicture {get; set;} = string.Empty;
         public bool IsApprovedByUNPHU { get; set; }
+
+
     }
 }

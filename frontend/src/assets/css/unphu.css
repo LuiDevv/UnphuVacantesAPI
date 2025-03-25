@@ -1,4 +1,3 @@
-/* Paleta de colores UNPHU */
 :root {
     --unphu-green: #006341;
     --unphu-yellow: #FFB81C;
@@ -8,19 +7,39 @@
     --unphu-light-green: #00A86B;
 }
 
+/* Animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+    from { transform: translateX(-100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-30px); }
+    60% { transform: translateY(-15px); }
+}
+
 /* Estilos generales */
 body {
     font-family: 'Arial', sans-serif;
     background: url('/public/images/unphu-3.jpg') no-repeat center center fixed;
     background-size: cover;
     color: var(--unphu-dark-gray);
-    position: relative;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Capa verde semitransparente sobre el fondo */
 body::before {
     content: "";
     position: fixed;
@@ -28,39 +47,44 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 99, 65, 0.5); /* Verde UNPHU con 50% de opacidad */
-    z-index: 0; /* Mantiene la capa detrás del contenido */
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+    animation: fadeIn 1s ease-in-out;
 }
 
-/* Asegura que el contenido esté sobre la capa verde */
-*,
-*::before,
-*::after {
-    position: relative;
-    z-index: 1;
-    box-sizing: inherit;
+.container {
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
-/* Navbar */
-.navbar {
-    background-color: var(--unphu-green); /* Aseguramos que el fondo sea verde oscuro */
-    border-bottom: 2px solid var(--unphu-light-gray); /* Sutil separación */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+/* Hero Section */
+.hero-section {
+    margin-top: 100px;
+    padding: 80px 20px;
+    background-color: rgba(0, 99, 65, 0.5);
+    color: var(--unphu-white);
+    text-align: center;
+    animation: fadeIn 1.5s ease-in-out;
 }
 
-/* Navbar para mantener el color blanco de los enlaces */
-.navbar-brand, .nav-link {
-    color: var(--unphu-white) !important;
-    font-weight: 500;
-    transition: color 0.3s ease-in-out;
+.hero-section img {
+    max-width: 100%;
+    border-radius: 10px;
+    animation: slideInRight 1s ease-in-out;
 }
 
-.nav-link:hover {
-    color: var(--unphu-yellow) !important;
+.hero-section h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    animation: slideInLeft 1s ease-in-out;
 }
 
-/* Botones */
-.btn-primary {
+.hero-section p {
+    font-size: 1.2rem;
+    animation: slideInLeft 1.2s ease-in-out;
+}
+
+.hero-section .btn-primary {
     background-color: var(--unphu-light-green);
     border-color: var(--unphu-light-green);
     color: var(--unphu-white);
@@ -69,103 +93,126 @@ body::before {
     text-transform: uppercase;
     font-weight: bold;
     transition: all 0.3s ease;
+    animation: bounce 1.5s ease-in-out;
 }
 
-.btn-primary:hover {
+.hero-section .btn-primary:hover {
     background-color: var(--unphu-yellow);
     border-color: var(--unphu-yellow);
     color: var(--unphu-dark-gray);
-    transform: translateY(-2px); /* Efecto de elevación */
+    transform: translateY(-2px);
 }
 
-/* Carrusel */
-.carousel {
-    max-width: 100%;
-    height: auto;
-    margin: 0 auto;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Sombra sutil */
-}
-
-.carousel-item img {
-    height: 350px; /* Tamaño uniforme */
-    width: 100%;
-    object-fit: cover;
-    border-radius: 10px;
-}
-
-/* Contenedor principal */
-.home-container {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    gap: 30px;
-    padding: 60px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-/* Secciones */
-.section {
-    padding: 80px 20px;
-    text-align: center;
-    background-color: var(--unphu-light-gray);
-    border-radius: 10px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
-}
-
-.section-title {
-    color: var(--unphu-green);
-    font-size: 36px;
-    font-weight: 700;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-/* Información - Fondo blanco y sombra */
-.info-box {
-    height: 300px;
+/* Sección de Características */
+.features-section {
     background-color: var(--unphu-white);
-    padding: 30px;
+    padding: 60px 20px;
     border-radius: 10px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    margin-top: 20px;
-}
-
-.info-box h2 {
-    color: var(--unphu-green);
-    font-weight: 600;
-}
-
-/* Tipografía */
-h1, h2, h3, h4, h5, h6 {
-    font-weight: 600;
-    margin: 0;
-    padding: 0;
-}
-
-/* Enlaces */
-a {
-    text-decoration: none;
-    transition: color 0.3s ease-in-out;
-}
-
-a:hover {
-    color: var(--unphu-yellow);
-}
-
-/* Estilos adicionales */
-section {
-    background-color: var(--unphu-white);
-    border-radius: 15px;
-    padding: 40px;
-    margin-bottom: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin: 30px auto;
+    animation: fadeIn 1.5s ease-in-out;
 }
 
+.feature-icon {
+    max-width: 150px;
+    height: auto;
+    margin-bottom: 15px;
+    transition: transform 0.3s ease-in-out;
+    animation: bounce 1s ease-in-out;
+}
+
+.feature-icon:hover {
+    transform: scale(1.1);
+}
+
+.features-section h4 {
+    color: var(--unphu-green);
+    font-weight: bold;
+    font-size: 22px;
+    margin-top: 10px;
+    animation: slideInLeft 1s ease-in-out;
+}
+
+.features-section p {
+    color: var(--unphu-dark-gray);
+    font-size: 16px;
+    max-width: 250px;
+    margin: 0 auto;
+    animation: slideInRight 1s ease-in-out;
+}
+
+/* Sección de Testimonios */
+.testimonials-section {
+    background-color: var(--unphu-light-gray);
+    padding: 60px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 30px auto;
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+.testimonials-section h2 {
+    text-align: center;
+    color: var(--unphu-green);
+    margin-bottom: 30px;
+    animation: slideInLeft 1s ease-in-out;
+}
+
+.testimonials-section .card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    animation: slideInRight 1s ease-in-out;
+}
+
+.testimonials-section .card:hover {
+    transform: translateY(-5px);
+}
+
+.testimonials-section .card-footer {
+    background-color: transparent;
+    border-top: none;
+    color: var(--unphu-dark-gray);
+}
+
+/* Sección de CTA para Empresas */
+.cta-section {
+    background-color: var(--unphu-green);
+    color: var(--unphu-white);
+    padding: 60px 20px;
+    text-align: center;
+    border-radius: 10px;
+    margin: 30px auto;
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+.cta-section h2 {
+    margin-bottom: 20px;
+    animation: slideInLeft 1s ease-in-out;
+}
+
+.cta-section .btn-warning {
+    background-color: var(--unphu-yellow);
+    border-color: var(--unphu-yellow);
+    color: var(--unphu-dark-gray);
+    padding: 12px 20px;
+    border-radius: 30px;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    animation: bounce 1.5s ease-in-out;
+}
+
+.cta-section .btn-warning:hover {
+    background-color: var(--unphu-light-green);
+    border-color: var(--unphu-light-green);
+    color: var(--unphu-white);
+    transform: translateY(-2px);
+}
+
+/* Footer */
 footer {
     background-color: var(--unphu-green);
     color: var(--unphu-white);
@@ -173,16 +220,22 @@ footer {
     text-align: center;
     font-size: 14px;
     margin-top: 40px;
+    animation: fadeIn 1.5s ease-in-out;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .home-container {
-        flex-direction: column;
-        padding: 20px;
+    .hero-section h1 {
+        font-size: 2rem;
     }
 
-    .section-title {
-        font-size: 30px;
+    .hero-section p {
+        font-size: 1rem;
+    }
+
+    .features-section,
+    .testimonials-section,
+    .cta-section {
+        padding: 40px 15px;
     }
 }

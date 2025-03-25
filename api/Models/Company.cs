@@ -26,8 +26,11 @@ public class Company
 
     public int? PortfolioCompanyId { get; set; }
 
+    public string Password { get; set; } = string.Empty;
+
     // Nueva columna para 'Symbol'
     public string Symbol { get; set; } = string.Empty;
+    public string ProfilePicture { get; set; } = string.Empty;
     public bool IsApprovedByUNPHU { get; set; } = false;
     public List<Portfolio> Portfolios { get; set; } = new List<Portfolio>();
     

@@ -1,0 +1,259 @@
+:root {
+  --unphu-green: #1a4b3d;
+  --unphu-yellow: #f7d64b;
+  --unphu-white: #ffffff;
+  --unphu-gray: #f4f4f4;
+  --unphu-red: #d9534f;
+  --unphu-red-hover: #c9302c;
+  --unphu-blue: #004c7d;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: var(--unphu-gray);
+}
+
+.profile-container {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--unphu-white);
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Estilo original para el header */
+.profile-header {
+  width: 80%;
+  padding: 20px;
+  background-color: var(--unphu-green);
+  border-radius: 12px;
+  color: var(--unphu-white);
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile-avatar {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin-bottom: 10px;
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--unphu-white);
+  cursor: pointer;
+}
+
+.file-upload {
+  margin-top: 0;
+}
+
+.file-upload input {
+  display: none;
+}
+
+.file-upload label {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: var(--unphu-yellow);
+  color: var(--unphu-green);
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: center;
+}
+
+.file-upload label:hover {
+  background-color: #e6c042;
+}
+
+.edit-button {
+    display: block;
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: var(--unphu-yellow);
+    color: var(--unphu-green);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+}
+
+.edit-button:hover {
+  background-color: #e6c042;
+}
+
+.profile-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 20px;
+}
+
+.profile-info h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--unphu-white);
+}
+
+.profile-info p {
+  margin: 5px 0;
+  font-size: 16px;
+  color: var(--unphu-white);
+}
+
+/* Estilo actualizado para el container inferior */
+.profile-details {
+  width: 80%;
+  padding: 20px;
+  background-color: var(--unphu-white);
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.edit-form label {
+  display: block;
+  margin-bottom: 15px;
+  font-size: 16px;
+  color: var(--unphu-green);
+}
+
+.edit-form input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid var(--unphu-green);
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.save-button {
+  padding: 10px 20px;
+  background-color: var(--unphu-green);
+  color: var(--unphu-white);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.save-button:hover {
+  background-color: #153e32;
+}
+
+.profile-about {
+  padding: 20px;
+  background-color: var(--unphu-white);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-about h2 {
+  margin-top: 0;
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--unphu-green);
+}
+
+.profile-about p {
+  margin: 10px 0;
+  font-size: 16px;
+  color: var(--unphu-green);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 10px;
+  }
+
+  .profile-header {
+    width: 95%;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .profile-avatar {
+    margin-bottom: 10px;
+  }
+  
+  .profile-details {
+    width: 95%;
+  }
+
+  .profile-info h1 {
+    font-size: 22px;
+  }
+
+  .profile-info p {
+    font-size: 14px;
+  }
+}
+/* Estilos para la ventana modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Asegura que esté encima de otros elementos */
+}
+
+.modal-content {
+    background-color: var(--unphu-white);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    position: relative;
+    width: 80%;
+    max-width: 500px;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    color: #555;
+}
+
+.close-button:hover {
+    color: #000;
+}
+
+/* Estilos para el contenedor de subida de archivos */
+.upload-container {
+    width: 80%;
+    padding: 20px;
+    background-color: var(--unphu-white);
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    text-align: center;
+}
+
+.upload-container h2 {
+    color: var(--unphu-green);
+    font-size: 20px;
+}

@@ -1,0 +1,387 @@
+:root {
+  --unphu-green: #1a4b3d;
+  --unphu-yellow: #f7d64b;
+  --unphu-white: #ffffff;
+  --unphu-gray: #f4f4f4;
+  --unphu-red: #d9534f;
+  --unphu-red-hover: #c9302c;
+  --unphu-blue: #004c7d; /* Color principal cambiado a azul */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: var(--unphu-gray);
+}
+
+/* Estilos generales del contenedor del perfil de la empresa */
+/* Estilos generales del contenedor del perfil de la empresa */
+.company-profile-container {
+  width: 100%;
+  min-height: calc(120vh - 80px); /* Ajusta según la altura de tu Navbar */
+  background-color: var(--unphu-gray);
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+   /* Ajusta según la altura de tu Navbar */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 0;
+   /* Añadido para el z-index */
+}
+
+
+/* Estilos para el card contenedor del header y details */
+.company-profile-card {
+width: 80%; /* Aumentado para ser más ancho */
+max-width: 800px; /* Ancho máximo para pantallas grandes */
+border: 1px solid #ccc;
+border-radius: 8px;
+padding: 20px;
+margin-bottom: 20px;
+background-color: white;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+margin-left: 350px;  /* Añadido para centrar horizontalmente */
+margin-right: auto; /* Añadido para centrar horizontalmente */
+}
+
+
+/* Estilos para el encabezado del perfil */
+.company-profile-header {
+width: 100%; /* Ajustado para ocupar todo el ancho del card */
+padding: 20px;
+background-color: var(--unphu-blue); /* Azul */
+border-radius: 12px;
+color: var(--unphu-white);
+margin-bottom: 20px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+/* Estilos para el avatar de la empresa */
+.company-profile-avatar {
+position: relative;
+width: 150px;
+height: 150px;
+margin-bottom: 10px;
+}
+
+.company-avatar {
+width: 100%;
+height: 100%;
+border-radius: 50%;
+object-fit: cover;
+border: 4px solid var(--unphu-white);
+cursor: pointer;
+}
+
+.file-upload {
+margin-top: 0;
+}
+
+.file-upload input {
+display: none;
+}
+
+.file-upload label {
+display: inline-block;
+padding: 8px 16px;
+background-color: var(--unphu-yellow);
+color: var(--unphu-blue); /* Azul */
+border-radius: 5px;
+cursor: pointer;
+font-size: 14px;
+text-align: center;
+}
+
+.file-upload label:hover {
+background-color: #e6c042;
+}
+
+.company-edit-button {
+display: block;
+margin-top: 10px;
+padding: 8px 16px;
+background-color: var(--unphu-yellow);
+color: var(--unphu-blue); /* Azul */
+border: none;
+border-radius: 5px;
+cursor: pointer;
+font-size: 14px;
+text-align: center;
+}
+
+.company-edit-button:hover {
+background-color: #e6c042;
+}
+
+.company-profile-info {
+flex: 1;
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+margin-left: 20px;
+}
+
+.company-profile-info h1 {
+margin: 0;
+font-size: 24px;
+font-weight: bold;
+color: var(--unphu-white);
+}
+
+.company-profile-info p {
+margin: 5px 0;
+font-size: 16px;
+color: var(--unphu-white);
+}
+
+/* Estilo actualizado para el container inferior */
+.company-profile-details {
+width: 100%; /* Ajustado para ocupar todo el ancho del card */
+padding: 20px;
+background-color: var(--unphu-white);
+border-radius: 12px;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+margin-top: 20px;
+}
+
+.company-edit-form label {
+display: block;
+margin-bottom: 15px;
+font-size: 16px;
+color: var(--unphu-blue); /* Azul */
+}
+
+.company-edit-form input {
+width: 100%;
+padding: 10px;
+margin-top: 5px;
+border: 1px solid var(--unphu-blue); /* Azul */
+border-radius: 5px;
+font-size: 14px;
+}
+
+.company-save-button {
+padding: 10px 20px;
+background-color: var(--unphu-blue); /* Azul */
+color: var(--unphu-white);
+border: none;
+border-radius: 5px;
+cursor: pointer;
+font-size: 16px;
+margin-right: 10px; /* Separación entre botones */
+}
+
+.company-save-button:hover {
+background-color: #003366; /* Azul más oscuro */
+}
+
+.company-cancel-button {
+padding: 10px 20px;
+background-color: var(--unphu-red); /* Rojo */
+color: var(--unphu-white);
+border: none;
+border-radius: 5px;
+cursor: pointer;
+font-size: 16px;
+}
+
+.company-cancel-button:hover {
+background-color: var(--unphu-red-hover); /* Rojo más oscuro */
+}
+
+.company-profile-details {
+padding: 20px;
+background-color: var(--unphu-white);
+border-radius: 8px;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+}
+
+.company-profile-about h2 {
+margin-top: 0;
+font-size: 24px;
+font-weight: bold;
+color: var(--unphu-blue); /* Azul */
+}
+
+.company-profile-details p {
+  margin: 10px 0;
+  font-size: 16px;
+  color: var(--unphu-blue); /* Azul */
+}
+.company-profile-details p strong {
+  font-weight: bold; /* Texto en negrita */
+}
+.company-profile-details p span {
+  font-style: italic; /* Texto en itálica */
+}
+
+.company-profile-details p:nth-child(odd) {
+  background-color: #f9f9f9; /* Color de fondo ligero para filas impares */
+  padding: 5px; /* Añadir un poco de relleno para que no esté pegado al borde */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+.company-profile-details {
+    padding: 10px;
+}
+
+.company-profile-header {
+    width: 95%;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.company-profile-avatar {
+    margin-bottom: 10px;
+}
+
+.company-profile-details {
+    width: 95%;
+}
+
+.company-profile-info h1 {
+    font-size: 22px;
+}
+
+.company-profile-info p {
+    font-size: 14px;
+}
+}
+
+/* Estilos para la ventana modal */
+.modal {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 1000; /* Asegura que esté encima de otros elementos */
+}
+
+.modal-content {
+background-color: var(--unphu-white);
+padding: 20px;
+border-radius: 8px;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+position: relative;
+width: 80%;
+max-width: 500px;
+}
+/* Estilos para el contenedor del avatar en el modal */
+.modal .company-profile-avatar {
+display: flex;
+flex-direction: column;
+align-items: center;
+margin-bottom: 30px; /* Aumenta el margen inferior */
+}
+
+/* Estilos para el avatar en el modal */
+.modal .company-avatar {
+width: 100px;
+height: 100px;
+border-radius: 50%;
+object-fit: cover;
+border: 4px solid var(--unphu-white);
+cursor: pointer;
+}
+
+/* Estilos para el file upload en el modal */
+/* Estilos para el contenedor del avatar en el modal */
+.modal .company-profile-avatar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px; /* Asegura separación del nombre */
+}
+
+/* Ajuste del file-upload dentro del modal */
+.modal .file-upload {
+    width: 100%;
+    text-align: center;
+    margin-top: 15px; /* Aumentado para evitar superposición */
+}
+
+.modal .file-upload label {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: var(--unphu-yellow);
+    color: var(--unphu-blue);
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+    margin-top: 10px; /* Separa el botón del nombre */
+}
+.company-profile-card {
+  width: calc(100% - 350px); /* El ancho será el 100% menos el ancho del navbar */
+  max-width: none; /* Elimina el ancho máximo */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-left: 350px;  /* Mantiene el margen izquierdo para alinear con el navbar */
+  margin-right: 0; /* Elimina el margen derecho */
+}
+
+
+.close-button {
+position: absolute;
+top: 10px;
+right: 10px;
+
+font-size: 20px;
+cursor: pointer;
+color: #555;
+}
+
+.close-button:hover {
+color: #ff0000;
+}
+
+/* Estilos para el contenedor de subida de archivos */
+.upload-container {
+width: 80%;
+padding: 20px;
+background-color: var(--unphu-white);
+border-radius: 12px;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+margin-top: 20px;
+text-align: center;
+}
+
+.upload-container h2 {
+color: var(--unphu-blue); /* Azul */
+font-size: 20px;
+}
+
+/* Estilos para el componente FileUpload cuando está en el modal */
+.file-upload-modal {
+margin-top: 10px; /* Ajusta el margen superior */
+}
+
+.file-upload-modal label {
+display: inline-block;
+padding: 8px 16px;
+background-color: var(--unphu-yellow);
+color: var(--unphu-blue);
+border-radius: 5px;
+cursor: pointer;
+font-size: 14px;
+text-align: center;
+}
+
+.file-upload-modal label:hover {
+background-color: #e6c042;
+}

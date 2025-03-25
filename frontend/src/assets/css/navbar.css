@@ -1,0 +1,91 @@
+/* Variables para colores */
+:root {
+  --unphu-green: #1a4b3d; /* Ajusta con el tono correcto */
+  --unphu-yellow: #f7d64b; /* Ajusta con el tono correcto */
+  --unphu-white: #ffffff;
+  --unphu-gray: #f4f4f4;
+  --unphu-red: #d9534f;
+  --unphu-red-hover: #c9302c;
+  --unphu-blue: #004c7d;
+}
+
+/* Estilo general para la sidebar */
+.sidebar {
+  width: 250px;
+  background-color: var(--unphu-blue);
+  color: var(--unphu-white);
+  padding: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 4px 0 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Título de la sidebar */
+.sidebar-title {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Estilo para los enlaces de la sidebar */
+.sidebar-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1; /* Empuja el botón de cerrar sesión hacia abajo */
+}
+
+.sidebar-links li {
+  margin-bottom: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.sidebar-links li a {
+  display: block;
+  padding: 12px 20px;
+  background-color: var(--unphu-white);
+  color: #333;
+  font-size: 16px;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.sidebar-links li a:hover {
+  background-color: var(--unphu-yellow);
+  color: var(--unphu-green);
+}
+
+/* Botón de cerrar sesión */
+.logout-button {
+  margin-top: auto;
+  padding: 12px 20px;
+  background-color: var(--unphu-red);
+  border: none;
+  color: var(--unphu-white);
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: var(--unphu-red-hover);
+}
+
+/* Mejoras de accesibilidad */
+.sidebar a:focus, .logout-button:focus {
+  outline: 2px solid var(--unphu-yellow);
+  outline-offset: 2px;
+}
+

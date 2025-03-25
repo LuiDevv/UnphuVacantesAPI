@@ -1,0 +1,195 @@
+/* Estilos generales */
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f4f4f9;
+}
+
+/* Navbar */
+.dashboard-navbar {
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dashboard-navbar-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.dashboard-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Botones de navegación */
+.dashboard-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.dashboard-btn {
+  padding: 0.5rem 1.2rem;
+  border: none;
+  background-color: transparent;
+  color: #555;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 5px;
+}
+
+.dashboard-btn-active {
+  background-color: #006f56; /* Ajusta con un verde de la paleta */
+  color: #fff;
+}
+
+.dashboard-btn:hover {
+  background-color: rgba(0, 111, 86, 0.2);
+}
+
+/* Botón de logout */
+.dashboard-logout {
+  background-color: #e64a19; /* Ajusta el color a un tono más suave */
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.dashboard-logout:hover {
+  background-color: #c62e16;
+}
+
+/* Contenido del dashboard */
+.dashboard-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Asegura que los elementos se alineen al inicio */
+  padding: 0 2rem; /* Relleno a los lados */
+}
+
+.dashboard-card {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  text-align: center;
+}
+
+.dashboard-card h2 {
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.dashboard-card p {
+  color: #666;
+  font-size: 1rem;
+}
+
+/* Contenedor general de vacantes */
+/* Contenedor general de vacantes */
+.vacancies-container {
+  width: 90%;
+  margin: 0 auto; /* Eliminar el margen superior */
+  padding-top: 1.5rem; /* Espacio debajo del navbar */
+  text-align: left; /* Alinea el texto a la izquierda */
+}
+
+/* Título "Vacantes Disponibles" en la parte superior */
+.vacancies-container h2 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #333;
+  margin-top: 0;
+}
+
+
+.vacancy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+/* Estilos de las tarjetas de vacantes */
+.vacancy-card {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.vacancy-card:hover {
+  transform: translateY(-5px);
+}
+
+.vacancy-card h3 {
+  color: #006f56; /* Ajusta el color al verde de la paleta */
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.vacancy-card p {
+  color: #555;
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+}
+
+/* Título "Vacantes Disponibles" en la parte superior */
+.vacancies-container h2 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+/* Estilos del Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 60%;
+  max-width: 600px;
+  text-align: left;
+}
+
+.modal-content button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modal-content button:hover {
+  background-color: #0056b3;
+}

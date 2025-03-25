@@ -1,167 +1,248 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate para la redirección
-import axios from 'axios'; // Importa axios
-import '../assets/css/register.css'; // Asegúrate de que el archivo CSS esté configurado
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import '../assets/css/register.css';
+import { Link } from 'react-router-dom';
 
 const Register = () => {
-  const [name, setName] = useState('');
+  const [matricula, setMatricula] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [repeatPassword, setRepeatPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState(''); // Para mostrar los errores
-  const [loading, setLoading] = useState(false); // Para mostrar el estado de carga
-
-  // Redirección después del registro
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [isLoading, setIsLoading] = useState(false); // Estado para el indicador de carga
   const navigate = useNavigate();
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Lógica para manejar el registro
-    if (password !== repeatPassword) {
-      alert('Las contraseñas no coinciden');
+    if (password !== confirmPassword) {
+      setError('Las contraseñas no coinciden.');
+      setSuccess('');
       return;
     }
 
-    setLoading(true); // Activa el estado de carga
-    setErrorMessage(''); // Limpia cualquier mensaje de error previo
+    const data = {
+      matricula,
+      firstName,
+      lastName,
+      username,
+      email,
+      password,
+    };
+
+    setIsLoading(true); // Activar el indicador de carga
+    setError(''); // Limpiar errores previos
 
     try {
-      const response = await axios.post('http://localhost:5283/api/account/register', {
-        username: name, // Se usa 'username' en lugar de 'name' para que coincida con el backend
-        email: email,
-        password: password,
-      });
-
-      // Verificamos si la respuesta fue exitosa
-      if (response.status === 200) {
-        alert('¡Registro exitoso! Ahora puedes iniciar sesión.');
-        navigate('/login'); // Redirige a la página de inicio de sesión
-      } else {
-        setErrorMessage('Error al registrar el usuario.');
-      }
-    } catch (error: any) {
-      // Maneja los errores de la API
-      if (error.response) {
-        // Si hay respuesta de error desde la API
-        setErrorMessage(error.response.data.errors || error.response.data || 'Error desconocido');
-      } else {
-        // Si no hay respuesta (problema con la red, por ejemplo)
-        setErrorMessage('Hubo un problema con la solicitud, por favor inténtalo nuevamente.');
-      }
+      await axios.post('http://localhost:5283/api/account/register', data);
+      setSuccess('Registro exitoso. Redirigiendo al login...');
+      setTimeout(() => navigate('/login'), 2000); // Redirigir después de 2 segundos
+    } catch (err) {
+      setSuccess('');
+      setError('Error en el registro. Verifica los datos ingresados.');
     } finally {
-      setLoading(false); // Desactiva el estado de carga
+      setIsLoading(false); // Desactivar el indicador de carga
     }
   };
 
   return (
-    <section className="vh-100" style={{ backgroundColor: '#eee' }}>
-      <div className="container h-100">
+    <section className="vh-100">
+      <div className="container py-5 h-100">
         <div className="row d-flex justify-content-center align-items-center h-100">
-          <div className="col-lg-12 col-xl-11">
-            <div className="card text-black" style={{ borderRadius: '25px' }}>
-              <div className="card-body p-md-5">
-                <div className="row justify-content-center">
-                  <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-                    <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Registro</p>
-
-                    <form className="mx-1 mx-md-4" onSubmit={handleRegister}>
-                      {/* Nombre */}
-                      <div className="d-flex flex-row align-items-center mb-4">
-                        <i className="fas fa-user fa-lg me-3 fa-fw"></i>
-                        <div className="form-outline flex-fill mb-0">
-                          <input
-                            type="text"
-                            id="form3Example1c"
-                            className="form-control"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                          />
-                          <label className="form-label" htmlFor="form3Example1c">
-                            Tu matrícula
-                          </label>
-                        </div>
+          <div className="col col-xl-10">
+            <div className="login-card">
+              <div className="row g-0">
+                {/* FORMULARIO A LA IZQUIERDA */}
+                <div className="col-md-6 col-lg-7 d-flex align-items-center order-1 order-lg-2">
+                  <div className="card-body p-4 p-lg-5 text-black">
+                    <form onSubmit={handleRegister}>
+                      <div className="d-flex align-items-center mb-3 pb-1">
+                        <i className="fas fa-cubes fa-2x me-3" style={{ color: '#ff6219' }}></i>
+                        <span className="h1 fw-bold mb-0">UNPHU | Registro</span>
                       </div>
 
-                      {/* Correo */}
-                      <div className="d-flex flex-row align-items-center mb-4">
-                        <i className="fas fa-envelope fa-lg me-3 fa-fw"></i>
-                        <div className="form-outline flex-fill mb-0">
-                          <input
-                            type="email"
-                            id="form3Example3c"
-                            className="form-control"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                          />
-                          <label className="form-label" htmlFor="form3Example3c">
-                            Tu correo
-                          </label>
+                      <h5 className="fw-normal mb-3 pb-3">Crea tu cuenta</h5>
+
+                      {/* GRID LAYOUT */}
+                      <div
+                        style={{
+                          display: 'grid',
+                          gridTemplateColumns: '1fr 1fr',
+                          gap: '20px',
+                        }}
+                      >
+                        {/* Primera columna */}
+                        <div>
+                          <div className="form-outline mb-4">
+                            <input
+                              type="text"
+                              id="matricula"
+                              className="form-control form-control-lg"
+                              value={matricula}
+                              onChange={(e) => setMatricula(e.target.value)}
+                              required
+                            />
+                            <label className="form-label" htmlFor="matricula">
+                              Matrícula
+                            </label>
+                          </div>
+
+                          <div className="form-outline mb-4">
+                            <input
+                              type="text"
+                              id="firstName"
+                              className="form-control form-control-lg"
+                              value={firstName}
+                              onChange={(e) => setFirstName(e.target.value)}
+                              required
+                            />
+                            <label className="form-label" htmlFor="firstName">
+                              Primer Nombre
+                            </label>
+                          </div>
+
+                          <div className="form-outline mb-4">
+                            <input
+                              type="text"
+                              id="lastName"
+                              className="form-control form-control-lg"
+                              value={lastName}
+                              onChange={(e) => setLastName(e.target.value)}
+                              required
+                            />
+                            <label className="form-label" htmlFor="lastName">
+                              Apellido
+                            </label>
+                          </div>
+
+                          <div className="form-outline mb-4">
+                            <input
+                              type="text"
+                              id="username"
+                              className="form-control form-control-lg"
+                              value={username}
+                              onChange={(e) => setUsername(e.target.value)}
+                              required
+                            />
+                            <label className="form-label" htmlFor="username">
+                              Nombre de usuario
+                            </label>
+                          </div>
+                        </div>
+
+                        {/* Segunda columna */}
+                        <div>
+                          <div className="form-outline mb-4">
+                            <input
+                              type="email"
+                              id="email"
+                              className="form-control form-control-lg"
+                              value={email}
+                              onChange={(e) => setEmail(e.target.value)}
+                              required
+                            />
+                            <label className="form-label" htmlFor="email">
+                              Correo electrónico
+                            </label>
+                          </div>
+
+                          <div className="form-outline mb-4">
+                            <input
+                              type="password"
+                              id="password"
+                              className="form-control form-control-lg"
+                              value={password}
+                              onChange={(e) => setPassword(e.target.value)}
+                              required
+                            />
+                            <label className="form-label" htmlFor="password">
+                              Contraseña
+                            </label>
+                          </div>
+
+                          <div className="form-outline mb-4">
+                            <input
+                              type="password"
+                              id="confirmPassword"
+                              className="form-control form-control-lg"
+                              value={confirmPassword}
+                              onChange={(e) => setConfirmPassword(e.target.value)}
+                              required
+                            />
+                            <label className="form-label" htmlFor="confirmPassword">
+                              Repite tu contraseña
+                            </label>
+                          </div>
                         </div>
                       </div>
-
-                      {/* Contraseña */}
-                      <div className="d-flex flex-row align-items-center mb-4">
-                        <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
-                        <div className="form-outline flex-fill mb-0">
-                          <input
-                            type="password"
-                            id="form3Example4c"
-                            className="form-control"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                          />
-                          <label className="form-label" htmlFor="form3Example4c">
-                            Contraseña
-                          </label>
-                        </div>
-                      </div>
-
-                      {/* Repetir contraseña */}
-                      <div className="d-flex flex-row align-items-center mb-4">
-                        <i className="fas fa-key fa-lg me-3 fa-fw"></i>
-                        <div className="form-outline flex-fill mb-0">
-                          <input
-                            type="password"
-                            id="form3Example4cd"
-                            className="form-control"
-                            value={repeatPassword}
-                            onChange={(e) => setRepeatPassword(e.target.value)}
-                            required
-                          />
-                          <label className="form-label" htmlFor="form3Example4cd">
-                            Repite tu contraseña
-                          </label>
-                        </div>
-                      </div>
-
-                      {/* Mensaje de error */}
-                      {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
 
                       {/* Botón de registro */}
-                      <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                      <div className="pt-1 mb-4">
                         <button
+                          className="btn btn-dark btn-lg btn-block"
                           type="submit"
-                          className="btn btn-primary btn-lg"
-                          disabled={loading} // Desactiva el botón mientras está cargando
+                          disabled={isLoading} // Deshabilitar el botón durante la carga
                         >
-                          {loading ? 'Registrando...' : 'Registrarme'}
+                          {isLoading ? (
+                            <>
+                              <span
+                                className="spinner-border spinner-border-sm"
+                                role="status"
+                                aria-hidden="true"
+                              ></span>{' '}
+                              Cargando...
+                            </>
+                          ) : (
+                            'Registrarme'
+                          )}
                         </button>
                       </div>
+
+                      {/* Mensajes de éxito y error */}
+                      {success && (
+                        <div className="alert alert-success d-flex align-items-center" role="alert">
+                          <i className="fas fa-check-circle me-2"></i>
+                          {success}
+                        </div>
+                      )}
+                      {error && (
+                        <div className="alert alert-danger d-flex align-items-center" role="alert">
+                          <i className="fas fa-exclamation-circle me-2"></i>
+                          {error}
+                        </div>
+                      )}
+
+                      {/* Enlaces adicionales */}
+                      <p className="mb-5 pb-lg-2" style={{ color: '#393f81' }}>
+                        ¿Ya tienes una cuenta?{' '}
+                        <Link to="/login" style={{ color: '#393f81' }}>
+                          Inicia sesión aquí.
+                        </Link>
+                      </p>
+
+                      {/* Nuevo Link */}
+                      <p className="mb-5 pb-lg-2" style={{ color: '#393f81' }}>
+                        ¿Eres una empresa?{' '}
+                        <Link to="/register-emp" style={{ color: '#393f81' }}>
+                          ¡Regístrate aquí!
+                        </Link>
+                      </p>
                     </form>
                   </div>
+                </div>
 
-                  {/* Imagen */}
-                  <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-                    <img
-                      src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
-                      className="img-fluid"
-                      alt="Sample image"
-                    />
-                  </div>
+                {/* IMAGEN A LA DERECHA */}
+                <div className="col-md-6 col-lg-5 d-flex align-items-center order-2 order-lg-1">
+                  <img
+                    src="/images/register-img.jpg"
+                    alt="register form"
+                    className="img-fluid login-img"
+                  />
                 </div>
               </div>
             </div>

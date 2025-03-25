@@ -1,0 +1,82 @@
+:root {
+  --unphu-green: #1a4b3d; /* Ajusta con el tono correcto */
+  --unphu-yellow: #f7d64b; /* Ajusta con el tono correcto */
+  --unphu-white: #ffffff;
+  --unphu-gray: #f4f4f4;
+  --unphu-red: #d9534f;
+  --unphu-red-hover: #c9302c;
+  --unphu-blue: #004c7d;
+}
+
+.dashboard-navbar {
+  background-color: var(--unphu-white);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed; /* Hace que el navbar esté fijo en la parte superior */
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px 20px;
+  z-index: 1000; /* Para asegurar que el navbar esté encima del contenido */
+}
+
+.dashboard-navbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dashboard-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--unphu-blue);
+}
+
+.dashboard-buttons {
+  display: flex;
+  gap: 20px;
+}
+
+.dashboard-btn {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  color: var(--unphu-green);
+  cursor: pointer;
+  transition: color 0.3s, background-color 0.3s;
+  padding: 8px 16px; /* Asegura que haya suficiente espacio */
+  border-radius: 5px; /* Opcional, para bordes redondeados */
+}
+
+.dashboard-btn:hover {
+  color: var(--unphu-blue);
+  background-color: var(--unphu-gray); /* Cambia el fondo al pasar el mouse */
+}
+
+.dashboard-btn-active,
+.dashboard-btn-selected {
+  background-color: var(--unphu-green);
+  color: var(--unphu-white);
+  font-weight: bold;
+}
+
+.dashboard-logout {
+  background-color: var(--unphu-red);
+  border: none;
+  color: var(--unphu-white);
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.dashboard-logout:hover {
+  background-color: var(--unphu-red-hover);
+}
+
+/* Asegura que el contenido principal no quede debajo del navbar */
+.dashboard-container {
+  padding-top: 70px; /* Ajusta según la altura de tu navbar */
+}
+
+.main-content {
+  padding: 20px;
+}
