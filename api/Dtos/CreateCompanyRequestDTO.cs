@@ -30,6 +30,12 @@ namespace api.Dtos
         [Required(ErrorMessage = "El RNC es obligatorio.")]
         [RegularExpression(@"^\d{9}$", ErrorMessage = "El RNC debe contener exactamente 9 dígitos.")]
         public required string RNC { get; set; }
+
+        public required string Symbol { get; set; }
+
+         [Required(ErrorMessage = "La contraseña es obligatoria.")]
+        [MinLength(8, ErrorMessage = "La contraseña debe tener al menos 8 caracteres.")] // Agrega una validación de longitud mínima
+        public required string Password { get; set; }
     }
 }
 

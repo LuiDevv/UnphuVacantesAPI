@@ -54,87 +54,110 @@ public class CompaniesController : ControllerBase
         return company;
     }
 
-    [HttpPost] // Este es el método de registro
-        public async Task<ActionResult<Company>> CreateCompany(Company company)
-        {
-            // Hashea la contraseña antes de guardar la compañía
-            company.Password = PasswordHelper.HashPassword(company.Password);
-
-            _context.Companies.Add(company);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetCompany), new { id = company.Id }, company);
-        }
-
-        [HttpPost("login")]
-public async Task<IActionResult> Login([FromBody] LoginRequestDTO loginRequestDTO)
+        [HttpPost]
+public async Task<ActionResult<Company>> CreateCompany([FromBody] CreateCompanyRequestDTO createCompanyDto)
 {
     if (!ModelState.IsValid)
-        return BadRequest(ModelState);
-
-    // Buscar la compañía por Symbol (el nombre de usuario en este caso)
-    var company = await _context.Companies.FirstOrDefaultAsync(x => x.Symbol == loginRequestDTO.Symbol.ToLower());
-
-    if (company == null)
-        return Unauthorized("Invalid symbol");
-
-    // Verificar la contraseña
-    if (!PasswordHelper.VerifyPassword(loginRequestDTO.Password, company.Password))
     {
-        return Unauthorized("Symbol or password is incorrect");
+        return BadRequest(ModelState);
     }
 
-    // Generar el token
-    var token = _tokenService.GenerateToken(company);
-
-    // Enviar el token en la respuesta JSON
-    return Ok(new 
+    // Validar que la contraseña no sea nula o vacía
+    if (string.IsNullOrEmpty(createCompanyDto.Password))
     {
-        Symbol = company.Symbol,
-        Email = company.ContactEmail,
-        Token = token
-    });
+        return BadRequest("Password is required");
+    }
+
+    var company = new Company
+    {
+        Name = createCompanyDto.Name,
+        Description = createCompanyDto.Description,
+        ContactEmail = createCompanyDto.ContactEmail,
+        Phone = createCompanyDto.Phone,
+        Location = createCompanyDto.Location,
+        RNC = createCompanyDto.RNC,
+        Symbol = createCompanyDto.Symbol.ToUpper(), // Convertir el Symbol a mayúsculas
+        Password = PasswordHelper.HashPassword(createCompanyDto.Password), // Hashear la contraseña
+    };
+
+    _context.Companies.Add(company);
+    await _context.SaveChangesAsync();
+
+    return CreatedAtAction(nameof(GetCompany), new { id = company.Id }, company);
 }
+
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequestDTO loginRequestDTO)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            // Buscar la compañía por Symbol (el nombre de usuario en este caso)
+            var company = await _context.Companies.FirstOrDefaultAsync(x => x.Symbol == loginRequestDTO.Symbol.ToUpper());
+
+            if (company == null)
+                return Unauthorized("Invalid symbol");
+            
+            if (!PasswordHelper.VerifyPassword(loginRequestDTO.Password, company.Password))
+            {
+                return Unauthorized("Symbol or password is incorrect");
+            }
+            
+            
+
+            // Generar el token
+            var token = _tokenService.GenerateToken(company);
+
+            // Enviar el token en la respuesta JSON
+            return Ok(new 
+            {
+                Symbol = company.Symbol,
+                Email = company.ContactEmail,
+                Token = token
+            });
+        }
 
     [HttpGet("current-company")]
-[Authorize]
-public async Task<IActionResult> GetCurrentCompany()
-{
-    // Verificar autenticación primero
-    if (User?.Identity?.IsAuthenticated != true)
+    [Authorize]
+    public async Task<IActionResult> GetCurrentCompany()
     {
-        return Unauthorized("Compañía no autenticada.");
+        // Verificar autenticación primero
+        if (User?.Identity?.IsAuthenticated != true)
+        {
+            return Unauthorized("Compañía no autenticada.");
+        }
+
+        // Obtener el ID de la empresa desde el token JWT
+        var companyIdClaim = User.FindFirst("CompanyId")?.Value;
+
+        if (string.IsNullOrEmpty(companyIdClaim) || !int.TryParse(companyIdClaim, out var companyId))
+        {
+            return BadRequest("ID de la compañía no válido o no proporcionado en el token.");
+        }
+
+        // Buscar la empresa en la base de datos
+        var company = await _context.Companies.FindAsync(companyId);
+        if (company == null)
+        {
+            return NotFound("Compañía no encontrada en la base de datos.");
+        }
+
+        // Devolver la información de la compañía
+        return Ok(new CompanyDTO
+        {
+            Id = company.Id,
+            Name = company.Name,
+            Description = company.Description,
+            ContactEmail = company.ContactEmail,
+            Phone = company.Phone,
+            Location = company.Location,
+            RNC = company.RNC,
+            Symbol = company.Symbol,
+            ProfilePicture = company.ProfilePicture,
+            IsApprovedByUNPHU = company.IsApprovedByUNPHU
+        });
     }
-
-    // Obtener el ID de la empresa desde el token JWT
-    var companyIdClaim = User.FindFirst("CompanyId")?.Value;
-
-    if (string.IsNullOrEmpty(companyIdClaim) || !int.TryParse(companyIdClaim, out var companyId))
-    {
-        return BadRequest("ID de la compañía no válido o no proporcionado en el token.");
-    }
-
-    // Buscar la empresa en la base de datos
-    var company = await _context.Companies.FindAsync(companyId);
-    if (company == null)
-    {
-        return NotFound("Compañía no encontrada en la base de datos.");
-    }
-
-    // Devolver la información de la compañía
-    return Ok(new CompanyDTO
-    {
-        Id = company.Id,
-        Name = company.Name,
-        Description = company.Description,
-        ContactEmail = company.ContactEmail,
-        Phone = company.Phone,
-        Location = company.Location,
-        RNC = company.RNC,
-        Symbol = company.Symbol,
-        ProfilePicture = company.ProfilePicture,
-        IsApprovedByUNPHU = company.IsApprovedByUNPHU
-    });
-}
 
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateCompany(int id, Company company)

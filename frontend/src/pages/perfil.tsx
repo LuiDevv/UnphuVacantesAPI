@@ -1,7 +1,10 @@
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import React, { useState, useEffect } from 'react';
 import FileUpload from './FileUpload';
 import NavbarUser from './navbar-user';
 import "../assets/css/perfil.css";
+
 
 const Perfil: React.FC = () => {
     const [user, setUser] = useState({
@@ -10,17 +13,16 @@ const Perfil: React.FC = () => {
         firstName: '',
         lastName: '',
         phoneNumber: '',
-        profilePicture: '', // Inicialmente vacío
-        cvUrl: '',
+        profilePicture: '',
+        cv: '',
     });
 
-    const [isEditing, setIsEditing] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [showModal, setShowModal] = useState(false);
 
-    const defaultProfilePicture = 'https://res.cloudinary.com/devgzya8r/image/upload/v1742693601/muvtwqkuvyy8lpiwmwhz.webp'; // Imagen por defecto
+    const defaultProfilePicture = 'https://res.cloudinary.com/devgzya8r/image/upload/v1742693601/muvtwqkuvyy8lpiwmwhz.webp';
 
-    // Función para obtener la imagen de perfil
     const getProfilePicture = () => {
         return user.profilePicture === 'string' ? defaultProfilePicture : user.profilePicture;
     };
@@ -37,7 +39,7 @@ const Perfil: React.FC = () => {
                 });
 
                 if (!response.ok) {
-                    throw new Error('Error al obtener los datos del usuario');
+                    throw new Error(`Error al obtener los datos del usuario: ${response.status} ${response.statusText}`);
                 }
 
                 const data = await response.json();
@@ -47,8 +49,8 @@ const Perfil: React.FC = () => {
                     firstName: data.firstName,
                     lastName: data.lastName,
                     phoneNumber: data.phoneNumber,
-                    profilePicture: data.profilePicture, // No asignamos la imagen por defecto aquí
-                    cvUrl: data.cvUrl || '',
+                    profilePicture: data.profilePicture,
+                    cv: data.cv || '',
                 });
             } catch (err) {
                 setError(err instanceof Error ? err.message : 'Error desconocido');
@@ -60,61 +62,58 @@ const Perfil: React.FC = () => {
         fetchUserData();
     }, []);
 
-    // Actualizar solo la información del usuario
-    const handleUpdateInfo = async () => {
+    const handleUpdateInfo = async (cvFile: string | null = null) => {
         try {
+            const payload = {
+                userName: user.userName,
+                email: user.email,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                phoneNumber: user.phoneNumber,
+                profilePicture: user.profilePicture,
+                cv: cvFile !== null ? cvFile : user.cv,
+            };
+
             const response = await fetch('http://localhost:5283/api/account/update-profile', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 },
-                body: JSON.stringify({
-                    userName: user.userName,
-                    email: user.email,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    phoneNumber: user.phoneNumber,
-                    profilePicture: user.profilePicture, // Incluimos la imagen aquí
-                }),
+                body: JSON.stringify(payload),
             });
 
             if (!response.ok) {
-                throw new Error('Error al actualizar la información del usuario');
+                const errorData = await response.json();
+                const errorMessage = errorData?.message || `Error al actualizar la información del usuario: ${response.status} ${response.statusText}`;
+                throw new Error(errorMessage);
             }
 
             console.log('Información actualizada correctamente');
-            setIsEditing(false);
+            setShowModal(false);
+
+            setUser(prevUser => ({
+                ...prevUser,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                phoneNumber: user.phoneNumber,
+                userName: user.userName,
+                email: user.email,
+                profilePicture: user.profilePicture,
+                cv: cvFile !== null ? cvFile : user.cv,
+            }));
         } catch (err) {
-            alert('Hubo un error al actualizar la información. Inténtalo de nuevo.');
+            const errorMessage = err instanceof Error ? err.message : 'Error desconocido al actualizar la información.';
+            toast(errorMessage);
         }
     };
 
-    // Subir CV
     const handleUploadCV = async (url: string) => {
-        try {
-            const response = await fetch('http://localhost:5283/api/account/update-cv', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                },
-                body: JSON.stringify({ cvUrl: url }),
-            });
-
-            if (!response.ok) {
-                throw new Error('Error al subir el CV');
-            }
-
-            console.log('CV subido correctamente');
-            setUser({ ...user, cvUrl: url });
-        } catch (err) {
-            alert('Hubo un error al subir el CV. Inténtalo de nuevo.');
-        }
+        await handleUpdateInfo(url);
     };
 
     const handleUploadSuccess = (url: string) => {
-        setUser({ ...user, profilePicture: url });
+        setUser(prevUser => ({ ...prevUser, profilePicture: url }));
     };
 
     if (loading) return <p>Cargando datos...</p>;
@@ -137,90 +136,99 @@ const Perfil: React.FC = () => {
                     <div className="profile-info">
                         <h1>{user.firstName} {user.lastName}</h1>
                         <p>{user.email}</p>
-                         <button className="edit-button" onClick={() => setIsEditing(true)}>
+                        <button className="edit-button" onClick={() => setShowModal(true)}>
                             Editar Información
                         </button>
                     </div>
                 </div>
-
                 <div className="profile-details">
-                    {isEditing ? (
-                        <div className="edit-form">
-                            <label>
-                                Nombre de usuario:
-                                <input
-                                    type="text"
-                                    value={user.userName}
-                                    onChange={(e) => setUser({ ...user, userName: e.target.value })}
-                                />
-                            </label>
-                            <label>
-                                Correo electrónico:
-                                <input
-                                    type="email"
-                                    value={user.email}
-                                    onChange={(e) => setUser({ ...user, email: e.target.value })}
-                                />
-                            </label>
-                            <label>
-                                Nombre:
-                                <input
-                                    type="text"
-                                    value={user.firstName}
-                                    onChange={(e) => setUser({ ...user, firstName: e.target.value })}
-                                />
-                            </label>
-                            <label>
-                                Apellido:
-                                <input
-                                    type="text"
-                                    value={user.lastName}
-                                    onChange={(e) => setUser({ ...user, lastName: e.target.value })}
-                                />
-                            </label>
-                            <label>
-                                Teléfono:
-                                <input
-                                    type="text"
-                                    value={user.phoneNumber}
-                                    onChange={(e) => setUser({ ...user, phoneNumber: e.target.value })}
-                                />
-                            </label>
-                            <label>
-                                Imagen de perfil:
-                                <FileUpload onUploadSuccess={handleUploadSuccess} />
-                            </label>
-
-                            <button className="save-button" onClick={handleUpdateInfo}>
-                                Guardar Cambios
-                            </button>
-                            <button className="cancel-button" onClick={() => setIsEditing(false)}>
-                                Cancelar
-                            </button>
-                        </div>
-                    ) : (
-                        <div className="profile-about">
-                            <h2>Acerca de mí</h2>
-                            <p>Nombre de usuario: {user.userName}</p>
-                            <p>Nombre: {user.firstName} {user.lastName}</p>
-                            <p>Correo electrónico: {user.email}</p>
-                            <p>Teléfono: {user.phoneNumber}</p>
-                        </div>
-                    )}
+                    <div className="profile-about">
+                        <h2>Acerca de mí</h2>
+                        <p>Nombre de usuario: {user.userName}</p>
+                        <p>Nombre: {user.firstName} {user.lastName}</p>
+                        <p>Correo electrónico: {user.email}</p>
+                        <p>Teléfono: {user.phoneNumber}</p>
+                    </div>
                 </div>
-
+                
                 <div className="upload-container">
                     <h2>Subir CV</h2>
                     <FileUpload onUploadSuccess={handleUploadCV} />
-                    {user.cvUrl && (
-                        <p>
-                            <a href={user.cvUrl} target="_blank" rel="noopener noreferrer">
-                                Ver CV
-                            </a>
-                        </p>
+                    
+                    {user.cv && (
+                        <div>
+                            <h3>Vista previa del CV:</h3>
+                            <iframe 
+                                src={`https://docs.google.com/gview?url=${encodeURIComponent(user.cv)}&embedded=true`} 
+                                width="100%" 
+                                height="500px" 
+                                style={{ border: "none" }}
+                            ></iframe>
+                            <a href={user.cv} download="CV">Descargar CV</a>
+                        </div>
                     )}
                 </div>
+
+                {/* Modal */}
+                {showModal && (
+                    <div className="modal">
+                        <div className="modal-content">
+                            <span className="close" onClick={() => setShowModal(false)}>&times;</span>
+                            <h2>Editar Información</h2>
+                            <div className="edit-form">
+                                <label>
+                                    Nombre de usuario:
+                                    <input
+                                        type="text"
+                                        value={user.userName}
+                                        onChange={(e) => setUser({ ...user, userName: e.target.value })}
+                                    />
+                                </label>
+                                <label>
+                                    Correo electrónico:
+                                    <input
+                                        type="email"
+                                        value={user.email}
+                                        onChange={(e) => setUser({ ...user, email: e.target.value })}
+                                    />
+                                </label>
+                                <label>
+                                    Nombre:
+                                    <input
+                                        type="text"
+                                        value={user.firstName}
+                                        onChange={(e) => setUser({ ...user, firstName: e.target.value })}
+                                    />
+                                </label>
+                                <label>
+                                    Apellido:
+                                    <input
+                                        type="text"
+                                        value={user.lastName}
+                                        onChange={(e) => setUser({ ...user, lastName: e.target.value })}
+                                    />
+                                </label>
+                                <label>
+                                    Teléfono:
+                                    <input
+                                        type="text"
+                                        value={user.phoneNumber}
+                                        onChange={(e) => setUser({ ...user, phoneNumber: e.target.value })}
+                                    />
+                                </label>
+                                <label>
+                                    Imagen de perfil:
+                                    <FileUpload onUploadSuccess={handleUploadSuccess} />
+                                </label>
+                                <button className="save-button" onClick={() => handleUpdateInfo()}>
+                                    Guardar Cambios
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
+            <ToastContainer position="top-right" />
         </div>
     );
 };

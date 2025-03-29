@@ -12,8 +12,8 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250324124449_CompanyId")]
-    partial class CompanyId
+    [Migration("20250327224739_InitialMigrate")]
+    partial class InitialMigrate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,19 +54,19 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c52efa39-0ec5-4851-853a-3804674f812d",
+                            Id = "479e3fb3-ffec-4307-8a75-3171c92c5103",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "0da70770-e04f-49b3-a0bc-0336058e4891",
+                            Id = "1ed7983f-bf39-4f69-8deb-044c5b12f0e7",
                             Name = "Employer",
                             NormalizedName = "EMPLOYER"
                         },
                         new
                         {
-                            Id = "d9f1cb2d-5093-46cc-9280-fa705378b33c",
+                            Id = "0df572b1-804c-475e-b9c8-66d7b813168f",
                             Name = "JobSeeker",
                             NormalizedName = "JOBSEEKER"
                         });
@@ -217,6 +217,8 @@ namespace api.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CompanyId");
+
                     b.ToTable("Vacants");
                 });
 
@@ -227,6 +229,10 @@ namespace api.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
+
+                    b.Property<string>("CV")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -301,7 +307,7 @@ namespace api.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("api.Models.ApplicationDocument", b =>
+            modelBuilder.Entity("api.Models.Application", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -309,25 +315,27 @@ namespace api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("FileName")
+                    b.Property<string>("AppUserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("FilePath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("JobApplicationId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UploadDate")
+                    b.Property<DateTime>("ApplicationDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CvUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("VacantId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("JobApplicationId");
+                    b.HasIndex("AppUserId");
 
-                    b.ToTable("ApplicationDocuments");
+                    b.HasIndex("VacantId");
+
+                    b.ToTable("Applications");
                 });
 
             modelBuilder.Entity("api.Models.Comment", b =>
@@ -397,6 +405,10 @@ namespace api.Migrations
 
                     b.Property<int?>("PortfolioCompanyId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ProfilePicture")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RNC")
                         .IsRequired()
@@ -488,39 +500,6 @@ namespace api.Migrations
                     b.HasIndex("JobTypeId");
 
                     b.ToTable("Jobs");
-                });
-
-            modelBuilder.Entity("api.Models.JobApplication", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("ApplicationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("JobId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("JobId1")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("JobId1");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("JobApplications");
                 });
 
             modelBuilder.Entity("api.Models.JobCategory", b =>
@@ -735,15 +714,34 @@ namespace api.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("api.Models.ApplicationDocument", b =>
+            modelBuilder.Entity("UNPHU_Vacantes.Models.Vacant", b =>
                 {
-                    b.HasOne("api.Models.JobApplication", "JobApplication")
-                        .WithMany()
-                        .HasForeignKey("JobApplicationId")
+                    b.HasOne("api.Models.Company", "Company")
+                        .WithMany("Vacants")
+                        .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("JobApplication");
+                    b.Navigation("Company");
+                });
+
+            modelBuilder.Entity("api.Models.Application", b =>
+                {
+                    b.HasOne("api.Models.AppUser", "AppUser")
+                        .WithMany("Applications")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UNPHU_Vacantes.Models.Vacant", "Vacant")
+                        .WithMany("Applications")
+                        .HasForeignKey("VacantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Vacant");
                 });
 
             modelBuilder.Entity("api.Models.Comment", b =>
@@ -801,25 +799,6 @@ namespace api.Migrations
                     b.Navigation("JobCategory");
 
                     b.Navigation("JobType");
-                });
-
-            modelBuilder.Entity("api.Models.JobApplication", b =>
-                {
-                    b.HasOne("api.Models.Job", "Job")
-                        .WithMany()
-                        .HasForeignKey("JobId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("api.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Job");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("api.Models.JobRecommendation", b =>
@@ -882,14 +861,23 @@ namespace api.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("UNPHU_Vacantes.Models.Vacant", b =>
+                {
+                    b.Navigation("Applications");
+                });
+
             modelBuilder.Entity("api.Models.AppUser", b =>
                 {
+                    b.Navigation("Applications");
+
                     b.Navigation("Portfolios");
                 });
 
             modelBuilder.Entity("api.Models.Company", b =>
                 {
                     b.Navigation("Portfolios");
+
+                    b.Navigation("Vacants");
                 });
 #pragma warning restore 612, 618
         }

@@ -10,5 +10,7 @@ namespace UNPHU_Vacantes.DTOs
         public required string Modality { get; set; }
         public required bool Status { get; set; }
          public int CompanyId {get; set;}
+         public string CompanyName { get; set; }
+        
     }
 }

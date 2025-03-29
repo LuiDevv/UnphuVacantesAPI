@@ -1,7 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using api.Models;
 
 namespace UNPHU_Vacantes.Models
 {
+    [Table("Vacants")] 
     public class Vacant
     {
         // Atributos de la vacante
@@ -25,6 +28,11 @@ namespace UNPHU_Vacantes.Models
         [Required]
         [StringLength(50)] // Estado de la vacante, por ejemplo: Activa/Inactiva
         public bool Status { get; set; } = true;
-        public int CompanyId { get; internal set; }
+        public int CompanyId { get; set; }
+
+        public Company Company { get; set; } 
+    
+
+        public List<Application> Applications { get; set; } = new();
     }
 }

@@ -13,9 +13,10 @@ import VacancyDetail from "./pages/VacancyDetail";
 import Perfil from "./pages/perfil";
 import VacantesUser from "./pages/vacantesuser";
 import DashboardUserHome from "./pages/dashboard-user-home";
-import AllVacantes from "./pages/all-vacantes"; 
-import PerfilEmp from "./pages/perfil-emp"
-
+import AllVacantes from "./pages/all-vacantes";
+import PerfilEmp from "./pages/perfil-emp";
+import Postulantes from "./pages/postulantes";
+import 'react-toastify/dist/ReactToastify.css'; 
 
 const App: React.FC = () => {
     return (
@@ -31,12 +32,15 @@ const App: React.FC = () => {
                         <Route path="/" element={<Home />} />
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/vacantes" element={<Vacantes />} />
-                        <Route path="/dashboard-user" element={<DashboardUserHome />} /> {/* Use DashboardUserHome here */}
+                        <Route path="/dashboard-user" element={<DashboardUserHome />} />
                         <Route path="/Vacant/:id" element={<VacancyDetail />} />
                         <Route path="/perfil" element={<Perfil />} />
                         <Route path="/vacantes-user" element={<VacantesUser />} />
                         <Route path="/all-vacantes" element={<AllVacantes />} />
                         <Route path="/perfil-emp" element={<PerfilEmp />} />
+                        
+                        {/* Corregido para pasar el vacantId a Postulantes */}
+                        <Route path="/postulantes/:vacantId" element={<Postulantes />} />
                     </Route>
                 </Routes>
             </Router>

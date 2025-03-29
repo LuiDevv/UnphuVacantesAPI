@@ -1,3 +1,5 @@
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import React, { useState } from 'react';
 
 interface FileUploadProps {
@@ -11,7 +13,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUploadSuccess }) => {
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]; // Obtener el archivo seleccionado
     if (!file) {
-      alert('Por favor, selecciona un archivo.');
+      toast('Por favor, selecciona un archivo.');
       return;
     }
 
@@ -55,6 +57,8 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUploadSuccess }) => {
       <input type="file" onChange={handleFileChange} disabled={isUploading} />
       {isUploading && <p>Subiendo archivo...</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
+
+      <ToastContainer position="top-right" />
     </div>
   );
 };

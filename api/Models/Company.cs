@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using UNPHU_Vacantes.Models;
 
 namespace api.Models;
 [Table("Companies")]
@@ -32,6 +33,7 @@ public class Company
     public string Symbol { get; set; } = string.Empty;
     public string ProfilePicture { get; set; } = string.Empty;
     public bool IsApprovedByUNPHU { get; set; } = false;
+    public ICollection<Vacant> Vacants { get; set; }
     public List<Portfolio> Portfolios { get; set; } = new List<Portfolio>();
     
 }

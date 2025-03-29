@@ -1,9 +1,12 @@
+import { toast, ToastPosition } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import React, { useEffect, useState } from 'react';
-import { Card, Button, Spinner, Modal, Form, Container, Row, Col } from 'react-bootstrap';
+import { Card, Button, Spinner, Modal, Form, Container, Row, Col, ToastContainer } from 'react-bootstrap';
 import axios from 'axios';
 import '../assets/css/vacantes.css';
 import { ReactComponent as PlusIcon } from '../icons/plus-icon.svg';
 import Navbar from './navbar';
+import { useNavigate } from 'react-router-dom'; // Importamos useNavigate para la navegación
 
 const Vacantes: React.FC = () => {
   const [vacantes, setVacantes] = useState<any[]>([]);
@@ -19,6 +22,8 @@ const Vacantes: React.FC = () => {
     area: '',
     modality: '',
   });
+
+  const navigate = useNavigate(); // Usamos useNavigate para redirigir a otra página
 
   const getCompanyIdFromToken = () => {
     const token = localStorage.getItem('token');
@@ -66,17 +71,17 @@ const Vacantes: React.FC = () => {
   const handleCreateVacante = async () => {
     const companyId = getCompanyIdFromToken();
     if (!companyId) {
-      alert('No se pudo obtener la compañía desde el token');
+      toast('No se pudo obtener la compañía desde el token');
       return;
     }
 
     try {
       await axios.post(
-        'http://localhost:5283/api/vacant',
+        'http://localhost:5283/api/Vacant',
         { ...newVacante, companyId },
         { headers: getAuthHeaders() }
       );
-      alert('Vacante creada');
+      toast('Vacante creada');
       setShowCreateModal(false);
       setNewVacante({ title: '', description: '', salary: '', area: '', modality: '' });
 
@@ -85,7 +90,7 @@ const Vacantes: React.FC = () => {
       });
       setVacantes(response.data || []); // Actualizamos las vacantes
     } catch (err) {
-      alert('Hubo un error al crear la vacante');
+      toast('Hubo un error al crear la vacante');
     }
   };
 
@@ -96,9 +101,9 @@ const Vacantes: React.FC = () => {
           headers: getAuthHeaders(),
         });
         setVacantes(vacantes.filter((vacante) => vacante.id !== id));
-        alert('Vacante eliminada');
+        toast('Vacante eliminada');
       } catch (err) {
-        alert('Hubo un error al eliminar la vacante');
+        toast('Hubo un error al eliminar la vacante');
       }
     }
   };
@@ -124,16 +129,20 @@ const Vacantes: React.FC = () => {
         setVacantes(prevVacantes =>
           prevVacantes.map(v => v.id === vacanteToEdit.id ? vacanteToEdit : v)
         );
-        alert('Vacante actualizada');
+        toast('Vacante actualizada');
         handleModalClose();
       } catch (err) {
-        alert('Hubo un error al actualizar la vacante');
+        toast('Hubo un error al actualizar la vacante');
       }
     }
   };
 
+  const handleVerPostulantes = (vacanteId: number) => {
+    navigate(`/postulantes/${vacanteId}`); // Redirige al componente de postulantes con el id de la vacante
+  };
+
   return (
-    <div className="vacantes-container">
+    <div className="vacantes-container1">
       <Navbar />
       <div className="main-content">
         <div className="content-header">
@@ -166,6 +175,7 @@ const Vacantes: React.FC = () => {
                         <div className="vacante-card-buttons">
                           <Button className="vacante-btn" variant="warning" onClick={() => handleUpdateVacante(vacante)}>Actualizar</Button>
                           <Button className="vacante-btn" variant="danger" onClick={() => handleDeleteVacante(vacante.id)}>Borrar</Button>
+                          <Button className="vacante-btn" variant="info" onClick={() => handleVerPostulantes(vacante.id)}>Ver Postulantes</Button>
                         </div>
                       </Card.Body>
                     </Card>
@@ -183,7 +193,7 @@ const Vacantes: React.FC = () => {
         </Button>
 
         {/* Modal para Crear Vacante */}
-        <Modal show={showCreateModal} onHide={() => setShowCreateModal(false)} style={{ zIndex: 1050 }}>
+        <Modal className="custom-modal" show={showCreateModal} onHide={() => setShowCreateModal(false)} style={{ zIndex: 1050 }}>
           <Modal.Header closeButton>
             <Modal.Title>Crear Vacante</Modal.Title>
           </Modal.Header>
@@ -240,10 +250,10 @@ const Vacantes: React.FC = () => {
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowCreateModal(false)}>
+            <Button className="custom-modal-button" variant="secondary" onClick={() => setShowCreateModal(false)}>
               Cerrar
             </Button>
-            <Button variant="primary" onClick={handleCreateVacante}>
+            <Button className="btn-crear" variant="primary" onClick={handleCreateVacante}>
               Crear Vacante
             </Button>
           </Modal.Footer>
@@ -306,12 +316,13 @@ const Vacantes: React.FC = () => {
             <Button variant="secondary" onClick={handleModalClose}>
               Cerrar
             </Button>
-            <Button variant="primary" onClick={handleSaveChanges}>
+            <Button className="btn-save" variant="primary" onClick={handleSaveChanges}>
               Guardar cambios
             </Button>
           </Modal.Footer>
         </Modal>
       </div>
+      <ToastContainer position="top-end" />
     </div>
   );
 };

@@ -1,0 +1,162 @@
+.postulantes-background {
+    background-color: #f5f5f5; /* Fondo claro */
+    min-height: 100vh; /* Asegura que cubra toda la pantalla */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 0;
+    padding: 20px; /* Añade un poco de padding */
+}
+
+.postulantes-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    max-width: 800px;
+    padding: 20px 0;
+    background-color: #ffffff; /* Fondo blanco para el header */
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    margin-bottom: 20px; /* Espacio debajo del header */
+    padding: 20px; /* Padding interno */
+}
+
+.postulantes-search-bar {
+    width: 200px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s ease;
+    margin-right: 10px; /* Añade un pequeño gap entre el search bar y el dropdown */
+}
+
+.postulantes-search-bar:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.postulantes-dropdown {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+    background-color: #ffffff; /* Fondo blanco */
+    transition: border-color 0.3s ease;
+}
+
+.postulantes-dropdown:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.postulantes-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333333;
+    margin-left: 30px; /* Mueve el título a la derecha */
+}
+
+.postulantes-container {
+    background-color: #ffffff; /* Fondo blanco */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 800px;
+}
+
+.postulantes-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.postulantes-item {
+    border-bottom: 1px solid #e0e0e0;
+    padding: 15px 0;
+}
+
+.postulantes-item:last-child {
+    border-bottom: none;
+}
+
+.postulantes-applicant-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333333; /* Color oscuro para el nombre */
+}
+
+.postulantes-cv-link {
+    color: #007bff; /* Azul */
+    text-decoration: none; /* Elimina el subrayado por defecto */
+    transition: color 0.3s ease;
+}
+
+.postulantes-cv-link:hover {
+    color: #0056b3; /* Cambia el color al pasar el mouse */
+    text-decoration: underline;
+}
+
+.postulantes-date {
+    font-size: 14px;
+    color: #555555;
+    margin-top: 5px; /* Espacio entre el CV y la fecha */
+}
+
+.postulantes-no-applications,
+.postulantes-error,
+.postulantes-loading {
+    font-size: 14px;
+    color: #555555;
+    text-align: center; /* Centra el texto */
+    margin-top: 20px; /* Espacio superior */
+}
+
+/* Estilos para el contenedor del search bar */
+.search-bar-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Alinea el search bar a la derecha */
+    width: 100%;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px; /* Bordes redondeados */
+    margin-bottom: 20px; /* Espacio debajo del contenedor */
+}
+
+/* Estilos para el input del search bar */
+.search-bar-input {
+    width: 300px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s ease;
+    margin-right: 10px; /* Añade un pequeño gap entre el search bar y el botón */
+}
+
+.search-bar-input:focus {
+    border-color: #007bff; /* Cambia el color del borde al enfocar */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Añade un efecto de sombra */
+}
+
+/* Estilos para el botón de búsqueda */
+.search-bar-button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-bar-button:hover {
+    background-color: #0056b3; /* Cambia el color al pasar el mouse */
+}

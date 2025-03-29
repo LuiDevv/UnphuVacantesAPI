@@ -6,15 +6,14 @@ const NavbarUser: React.FC = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Eliminar token y cualquier información de usuario del localStorage
-    localStorage.removeItem('token');
-    localStorage.removeItem('userName');
-    localStorage.removeItem('email');
-    localStorage.removeItem('firstName');
-    localStorage.removeItem('lastName');
+    // Eliminar token y datos del usuario del localStorage
+    localStorage.clear();
 
     // Redirigir al home
     navigate('/');
+
+    // Recargar la página para limpiar cualquier estado de sesión
+    window.location.reload();
   };
 
   return (

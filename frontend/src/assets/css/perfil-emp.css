@@ -385,3 +385,47 @@ text-align: center;
 .file-upload-modal label:hover {
 background-color: #e6c042;
 }
+
+/* perfil-emp.css */
+
+/* Styles for the vacancy activity chart */
+.vacancy-activity {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.vacancy-activity h2 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #333;
+  text-align: center;
+}
+
+/* Style the chart canvas */
+.vacancy-activity canvas {
+  width: 100% !important; /* Make the chart responsive */
+  max-height: 300px;       /* Limit the chart height */
+}
+
+/* Additional styling for the company profile card to accommodate the chart */
+.company-profile-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  margin-bottom: 30px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .vacancy-activity {
+      padding: 15px;
+  }
+
+  .vacancy-activity h2 {
+      font-size: 18px;
+  }
+}

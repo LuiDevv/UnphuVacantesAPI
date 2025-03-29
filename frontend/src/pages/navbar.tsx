@@ -22,7 +22,6 @@ const Sidebar: React.FC = () => {
       <ul className="sidebar-links">
         <li><Link to="/dashboard">Dashboard</Link></li>
         <li><Link to="/vacantes">Mis vacantes</Link></li>
-        <li><Link to="/postulantes">Postulantes</Link></li>
         <li><Link to="/all-vacantes">Vacantes</Link></li>
         <li><Link to="/perfil-emp">Mi perfil</Link></li>
         

@@ -12,8 +12,8 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250322123714_InitialMigrate")]
-    partial class InitialMigrate
+    [Migration("20250329014915_SaveVacant")]
+    partial class SaveVacant
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,19 +54,19 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "12e6dda0-53aa-44a1-8066-bdf3ee789029",
+                            Id = "ea2ea3e2-acf8-4687-8784-2c6f296bce5d",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "60f5b66a-1871-4c12-b92f-74c600cc55d4",
+                            Id = "289fe01a-43df-46c7-bc64-397a6e94b3f4",
                             Name = "Employer",
                             NormalizedName = "EMPLOYER"
                         },
                         new
                         {
-                            Id = "194ab15d-03cb-4fa8-8be7-e842881bc813",
+                            Id = "f1bf6ca1-0ed3-416b-91d9-222951738550",
                             Name = "JobSeeker",
                             NormalizedName = "JOBSEEKER"
                         });
@@ -190,6 +190,9 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -214,6 +217,8 @@ namespace api.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CompanyId");
+
                     b.ToTable("Vacants");
                 });
 
@@ -224,6 +229,10 @@ namespace api.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
+
+                    b.Property<string>("CV")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -267,6 +276,10 @@ namespace api.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("ProfilePicture")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Role")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -294,7 +307,7 @@ namespace api.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("api.Models.ApplicationDocument", b =>
+            modelBuilder.Entity("api.Models.Application", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -302,25 +315,27 @@ namespace api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("FileName")
+                    b.Property<string>("AppUserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("FilePath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("JobApplicationId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UploadDate")
+                    b.Property<DateTime>("ApplicationDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CvUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("VacantId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("JobApplicationId");
+                    b.HasIndex("AppUserId");
 
-                    b.ToTable("ApplicationDocuments");
+                    b.HasIndex("VacantId");
+
+                    b.ToTable("Applications");
                 });
 
             modelBuilder.Entity("api.Models.Comment", b =>
@@ -390,6 +405,10 @@ namespace api.Migrations
 
                     b.Property<int?>("PortfolioCompanyId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ProfilePicture")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RNC")
                         .IsRequired()
@@ -481,39 +500,6 @@ namespace api.Migrations
                     b.HasIndex("JobTypeId");
 
                     b.ToTable("Jobs");
-                });
-
-            modelBuilder.Entity("api.Models.JobApplication", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("ApplicationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("JobId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("JobId1")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("JobId1");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("JobApplications");
                 });
 
             modelBuilder.Entity("api.Models.JobCategory", b =>
@@ -642,6 +628,30 @@ namespace api.Migrations
                     b.ToTable("Roles");
                 });
 
+            modelBuilder.Entity("api.Models.SavedVacant", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AppUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("VacantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("VacantId");
+
+                    b.ToTable("SavedVacants");
+                });
+
             modelBuilder.Entity("api.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -728,15 +738,34 @@ namespace api.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("api.Models.ApplicationDocument", b =>
+            modelBuilder.Entity("UNPHU_Vacantes.Models.Vacant", b =>
                 {
-                    b.HasOne("api.Models.JobApplication", "JobApplication")
-                        .WithMany()
-                        .HasForeignKey("JobApplicationId")
+                    b.HasOne("api.Models.Company", "Company")
+                        .WithMany("Vacants")
+                        .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("JobApplication");
+                    b.Navigation("Company");
+                });
+
+            modelBuilder.Entity("api.Models.Application", b =>
+                {
+                    b.HasOne("api.Models.AppUser", "AppUser")
+                        .WithMany("Applications")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UNPHU_Vacantes.Models.Vacant", "Vacant")
+                        .WithMany("Applications")
+                        .HasForeignKey("VacantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Vacant");
                 });
 
             modelBuilder.Entity("api.Models.Comment", b =>
@@ -796,25 +825,6 @@ namespace api.Migrations
                     b.Navigation("JobType");
                 });
 
-            modelBuilder.Entity("api.Models.JobApplication", b =>
-                {
-                    b.HasOne("api.Models.Job", "Job")
-                        .WithMany()
-                        .HasForeignKey("JobId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("api.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Job");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("api.Models.JobRecommendation", b =>
                 {
                     b.HasOne("api.Models.Job", "Job")
@@ -864,6 +874,25 @@ namespace api.Migrations
                     b.Navigation("Company");
                 });
 
+            modelBuilder.Entity("api.Models.SavedVacant", b =>
+                {
+                    b.HasOne("api.Models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UNPHU_Vacantes.Models.Vacant", "Vacant")
+                        .WithMany()
+                        .HasForeignKey("VacantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Vacant");
+                });
+
             modelBuilder.Entity("api.Models.User", b =>
                 {
                     b.HasOne("api.Models.Role", "Role")
@@ -875,14 +904,23 @@ namespace api.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("UNPHU_Vacantes.Models.Vacant", b =>
+                {
+                    b.Navigation("Applications");
+                });
+
             modelBuilder.Entity("api.Models.AppUser", b =>
                 {
+                    b.Navigation("Applications");
+
                     b.Navigation("Portfolios");
                 });
 
             modelBuilder.Entity("api.Models.Company", b =>
                 {
                     b.Navigation("Portfolios");
+
+                    b.Navigation("Vacants");
                 });
 #pragma warning restore 612, 618
         }

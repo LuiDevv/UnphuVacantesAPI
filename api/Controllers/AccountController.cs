@@ -113,7 +113,7 @@ namespace api.Controllers
             
             if (user == null)
             {
-                return NotFound("User not found in database");
+                return NotFound("User not found in database");  
             }
 
             return Ok(new UserDetails
@@ -124,6 +124,7 @@ namespace api.Controllers
                 LastName = user.LastName,
                 PhoneNumber = user.PhoneNumber,
                 ProfilePicture = user.ProfilePicture,
+                CV = user.CV,
                 
                 Token = _tokenService.CreateToken(user)
             });
@@ -145,6 +146,7 @@ namespace api.Controllers
             user.LastName = updateProfileDto.LastName ?? user.LastName;
             user.PhoneNumber = updateProfileDto.PhoneNumber ?? user.PhoneNumber;
             user.ProfilePicture = updateProfileDto.ProfilePicture ?? user.ProfilePicture;
+            user.CV = updateProfileDto.CV ?? user.CV;
 
             // Guardar los cambios
             var result = await _userManager.UpdateAsync(user);

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Dtos.Account;
 
 namespace api.Dtos
 {
@@ -11,6 +12,8 @@ namespace api.Dtos
         public Guid UserId { get; set; }
         public Guid JobId { get; set; }
         public DateTime ApplicationDate { get; set; }
-        public string Status { get; set; } = "Pending";  // Valores posibles: "Pending", "Accepted", "Rejected"
+        public string Status { get; set; } = "Pending";
+        public string CvUrl { get; set;}
+        public NewUserDTO AppUser { get; set; } // Valores posibles: "Pending", "Accepted", "Rejected"
     }
 }

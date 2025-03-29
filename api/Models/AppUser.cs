@@ -14,5 +14,9 @@ namespace api.Models
          public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public string ProfilePicture { get; set; } = string.Empty;
+        public string CV {get; set;} = string.Empty;
+
+        public List<Application> Applications { get; set; }
+        
     }
 }

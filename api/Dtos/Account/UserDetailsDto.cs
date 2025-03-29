@@ -14,5 +14,6 @@ namespace api.Dtos.Account
         public string PhoneNumber { get; set; }
         public string Token { get; set; }
         public string ProfilePicture { get; set; }
+        public string CV { get; set; }
     }
 }

@@ -76,5 +76,15 @@ namespace UNPHU_Vacantes.Repositories
                 })
                 .ToListAsync();
         }
+
+        Task<IEnumerable<Vacant>> IVacantsInterface.GetVacants()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Vacant> AddVacant(Vacant vacant)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
